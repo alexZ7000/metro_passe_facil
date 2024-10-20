@@ -1,0 +1,34 @@
+{
+    "expo": {
+        "name": "gestaoDeSaude-SC",
+        "slug": "gestaoDeSaude-SC",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "src/app/ui/assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "src/app/ui/assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "src/app/ui/assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.titans08.gestaoDeSaudeSC"
+        },
+        "web": {
+            "favicon": "src/app/ui/assets/favicon.png"
+        },
+        "plugins": [
+            "expo-font"
+        ]
+    }
+}

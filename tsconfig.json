@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "jsx": "react-jsx",
+        "baseUrl": "./",
+        "paths": {
+            "@assets/*": ["./src/app/ui/assets/*"],
+            "@components/*": ["./src/app/ui/components/*"],
+            "@routes/*": ["./src/app/ui/routes/*"],
+            "@screens/*": ["./src/app/ui/screens/*"],
+            "@utils/*": ["./src/app/shared/utils/*"],
+        }
+    },
+    "extends": "expo/tsconfig.base"
+}
