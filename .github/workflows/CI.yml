@@ -1,42 +1,44 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - "*"
-  pull_request:
-    branches:
-      - "*"
+    push:
+        branches:
+            - "*"
+    pull_request:
+        branches:
+            - "*"
 
 jobs:
-  expo-ci:
-    runs-on: ubuntu-latest
+    expo-ci:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '17'
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "17"
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+            - name: Cache node modules
+              uses: actions/cache@v3
+              with:
+                  path: node_modules
+                  key:
+                      ${{ runner.os }}-node-${{ hashFiles('package-lock.json')
+                      }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
-      - name: Install dependencies
-        run: npm install
+            - name: Install dependencies
+              run: npm install
 
-      - name: Install Expo CLI
-        run: npm install -g expo-cli
+            - name: Install Expo CLI
+              run: npm install -g expo-cli
 
-      - name: Run tests
-        run: npm test
+            - name: Run tests
+              run: npm test
 
-      - name: Build Expo Project
-        run: expo build:web
+            - name: Build Expo Project
+              run: expo build:web

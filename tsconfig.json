@@ -9,6 +9,9 @@
             "@routes/*": ["./src/app/ui/routes/*"],
             "@screens/*": ["./src/app/ui/screens/*"],
             "@utils/*": ["./src/app/shared/utils/*"],
+            "@modules/*": ["./src/app/modules/*"],
+            "@shared/*": ["./src/app/shared/*"],
+            "@enums/*": ["./src/app/shared/enums/*"]
         }
     },
     "extends": "expo/tsconfig.base"
