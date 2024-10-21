@@ -1,7 +1,8 @@
 import { NativeBaseProvider, StatusBar } from "native-base";
-import "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import Routes from "./src/app/ui/routes/AppRoutes";
+import "react-native-gesture-handler";
 
 export default function App() {
     return (
