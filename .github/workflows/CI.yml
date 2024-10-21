@@ -37,6 +37,9 @@ jobs:
             - name: Install Expo CLI
               run: npm install -g expo
 
+            - name: Install required web dependencies
+              run: npx expo install react-native-web react-dom @expo/metro-runtime
+
             - name: Run tests
               run: npm test
 
