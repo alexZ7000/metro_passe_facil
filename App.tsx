@@ -1,4 +1,4 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import Routes from "./src/app/ui/routes/AppRoutes";
 
@@ -20,15 +20,17 @@ const theme = {
 
 export default function App() {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <PaperProvider theme={theme}>
-                <StatusBar
-                    barStyle="dark-content"
-                    backgroundColor="transparent"
-                    translucent
-                />
-                <Routes />
-            </PaperProvider>
-        </SafeAreaView>
+        <SafeAreaProvider>
+            <SafeAreaView style={{ flex: 1 }}>
+                <PaperProvider theme={theme}>
+                    <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor="transparent"
+                        translucent
+                    />
+                    <Routes />
+                </PaperProvider>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 }
