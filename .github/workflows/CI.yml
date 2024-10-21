@@ -43,5 +43,5 @@ jobs:
             - name: Run tests
               run: npm test
 
-            - name: Build Expo Project
-              run: npx expo export:web
+            - name: Export Expo Project
+              run: npx expo export
