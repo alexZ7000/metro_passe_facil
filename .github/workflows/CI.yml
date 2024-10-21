@@ -35,7 +35,7 @@ jobs:
               run: npm ci
 
             - name: Install Expo CLI
-              run: npm install -g expo-cli
+              run: npm install -g expo
 
             - name: Run tests
               run: npm test
