@@ -12,10 +12,18 @@ module.exports = function (api) {
                         "@components": "./src/app/ui/components",
                         "@routes": "./src/app/ui/routes",
                         "@screens": "./src/app/ui/screens",
-                        "@utils": "./src/app/utils"
+                        "@utils": "./src/app/utils",
+                        "@modules": "./src/app/modules",
+                        "@shared": "./src/app/shared",
+                        "@enums": "./src/app/shared/enums"
                     }
                 }
             ]
-        ]
+        ],
+        env: {
+            production: {
+                plugins: ["react-native-paper/babel"]
+            }
+        }
     };
 };
