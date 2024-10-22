@@ -1,6 +1,6 @@
 import metroLogo from "@assets/metro-logo.png";
 import NavHome from "@components/Home/NavHome";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Dimensions, ImageBackground, View } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 
