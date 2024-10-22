@@ -1,6 +1,7 @@
+import metroLogo from "@assets/metro-logo.png";
 import NavHome from "@components/Home/NavHome";
 import React, { useState } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, ImageBackground, View } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 
 export default function Home() {
@@ -20,6 +21,15 @@ export default function Home() {
                     alignContent: "center"
                 }}
             >
+                <ImageBackground
+                    source={metroLogo}
+                    style={{
+                        width: 200,
+                        height: 200,
+                        marginLeft: "auto",
+                        marginRight: "auto"
+                    }}
+                />
                 <TextInput
                     mode="outlined"
                     label="E-mail"
