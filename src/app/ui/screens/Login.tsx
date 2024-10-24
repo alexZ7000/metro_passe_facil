@@ -76,7 +76,7 @@ export default function Login() {
                     }}
                     variant="bodySmall"
                 >
-                    Elaborado pelo Instituto Mauá de Tecnologia
+                    Instituto Mauá de Tecnologia
                 </Text>
             </View>
         </View>

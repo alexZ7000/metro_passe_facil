@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "gestaoDeSaude-SC",
-        "slug": "gestaoDeSaude-SC",
+        "name": "metro_passe_facil",
+        "slug": "metro_passe_facil",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "src/app/ui/assets/expo/icon.png",
@@ -19,8 +19,7 @@
             "adaptiveIcon": {
                 "foregroundImage": "src/app/ui/assets/expo/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
-            },
-            "package": "com.titans08.gestaoDeSaudeSC"
+            }
         },
         "web": {
             "favicon": "src/app/ui/assets/expo/favicon.png"
