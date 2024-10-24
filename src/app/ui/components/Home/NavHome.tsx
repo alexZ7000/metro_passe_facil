@@ -27,7 +27,7 @@ export default function NavHome() {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: "#011689" // Cor do header
+        backgroundColor: "#011689"
     },
     metroLogo: {
         width: 24,
