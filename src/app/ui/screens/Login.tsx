@@ -1,13 +1,14 @@
 import metroLogo from "@assets/metro-logo.png";
 import NavHome from "@components/Home/NavHome";
 import { useState } from "react";
-import { Dimensions, ImageBackground, View } from "react-native";
+import { Dimensions, ImageBackground, Platform, View } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 
 export default function Login() {
     const [emailInputText, setEmailInputEmailInputText] = useState("");
     const [passwordInputText, setPasswordInputEmailInputText] = useState("");
     const screenHeight = Dimensions.get("window").height;
+    const isWeb = Platform.OS === "web";
 
     return (
         <View>
@@ -25,7 +26,7 @@ export default function Login() {
                 <ImageBackground
                     source={metroLogo}
                     style={{
-                        width: 200,
+                        width: isWeb ? "200%" : 200,
                         height: 200,
                         marginLeft: "auto",
                         marginRight: "auto"
@@ -56,8 +57,7 @@ export default function Login() {
                 >
                     <Button
                         style={{
-                            width: "200%",
-                            flex: 1,
+                            width: 200,
                             justifyContent: "center",
                             alignContent: "center"
                         }}
