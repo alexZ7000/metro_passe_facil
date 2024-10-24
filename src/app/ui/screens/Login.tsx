@@ -1,5 +1,6 @@
 import metroLogo from "@assets/metro-logo.png";
-import NavHome from "@components/Home/NavHome";
+import NavHome from "@components/nav/NavHome";
+import useAppNavigation from "@functions/useAppNavigation";
 import { useState } from "react";
 import {
     Dimensions,
@@ -14,8 +15,7 @@ import { TextInput, Button, Text } from "react-native-paper";
 export default function Login() {
     const [emailInputText, setEmailInputText] = useState("");
     const [passwordInputText, setPasswordInputText] = useState("");
-    const screenHeight = Dimensions.get("window").height;
-    const isWeb = Platform.OS === "web";
+    const navigation = useAppNavigation();
 
     return (
         <KeyboardAvoidingView
@@ -49,7 +49,7 @@ export default function Login() {
                         buttonColor="#011689"
                         icon="login"
                         mode="contained"
-                        onPress={() => console.log("pressionado")}
+                        onPress={() => navigation.navigate("LiveMonitoring")}
                     >
                         Entrar
                     </Button>

@@ -15,7 +15,10 @@ module.exports = function (api) {
                         "@utils": "./src/app/utils",
                         "@modules": "./src/app/modules",
                         "@shared": "./src/app/shared",
-                        "@enums": "./src/app/shared/enums"
+                        "@enums": "./src/app/shared/enums",
+                        "@@types": "./src/app/shared/@types",
+                        "@functions": "./src/app/shared/functions",
+                        "@interfaces": "./src/app/shared/interfaces"
                     }
                 }
             ]

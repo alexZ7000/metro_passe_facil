@@ -1,3 +1,4 @@
+import useAppNavigation from "@functions/useAppNavigation";
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
@@ -15,6 +16,7 @@ export default function BottomNavBar({ index, setIndex }: BottomNavBarProps) {
         { key: "add-person", icon: "account-plus" },
         { key: "logout", icon: "logout" }
     ];
+    const navigation = useAppNavigation();
 
     return (
         <View style={styles.navigationBar}>
@@ -24,7 +26,11 @@ export default function BottomNavBar({ index, setIndex }: BottomNavBarProps) {
                     icon={route.icon}
                     size={30}
                     iconColor={index === idx ? "#011689" : "#fff"}
-                    onPress={() => setIndex(idx)}
+                    onPress={
+                        route.key === "logout"
+                            ? () => navigation.navigate("Login")
+                            : () => setIndex(idx)
+                    }
                     style={[
                         styles.iconButton,
                         index === idx && styles.activeButton

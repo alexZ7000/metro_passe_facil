@@ -1,5 +1,5 @@
-import BottomNavBar from "@components/Home/BottomNavbar";
-import NavHome from "@components/Home/NavHome";
+import BottomNavBar from "@components/nav/BottomNavbar";
+import Navbar from "@components/nav/Navbar";
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { IconButton as PaperIconButton } from "react-native-paper";
@@ -13,7 +13,7 @@ export default function LiveMonitoring() {
 
     return (
         <View style={styles.container}>
-            <NavHome />
+            <Navbar />
             <View style={styles.innerContainer}>
                 {routes.map((route, idx) => (
                     <View style={styles.blueBox} key={route.key}>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     blueBox: {
-        backgroundColor: "#011689", // Cor azul
+        backgroundColor: "#011689",
         width: "90%",
         height: 120,
         borderRadius: 35,
