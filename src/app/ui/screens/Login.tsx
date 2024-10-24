@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Dimensions, ImageBackground, View } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 
-export default function Home() {
-    const [text, setText] = useState("");
+export default function Login() {
+    const [emailInputText, setEmailInputEmailInputText] = useState("");
+    const [passwordInputText, setPasswordInputEmailInputText] = useState("");
     const screenHeight = Dimensions.get("window").height;
 
     return (
@@ -33,16 +34,18 @@ export default function Home() {
                 <TextInput
                     mode="outlined"
                     label="E-mail"
-                    value={text}
+                    value={emailInputText}
                     placeholder="Insira seu e-mail"
-                    onChangeText={(text) => setText(text)}
+                    onChangeText={(text) => setEmailInputEmailInputText(text)}
                 />
                 <TextInput
                     mode="outlined"
                     label="Senha"
-                    value={text}
+                    value={passwordInputText}
                     placeholder="Insira sua senha"
-                    onChangeText={(text) => setText(text)}
+                    onChangeText={(text) =>
+                        setPasswordInputEmailInputText(text)
+                    }
                 />
                 <View
                     style={{
@@ -53,9 +56,10 @@ export default function Home() {
                 >
                     <Button
                         style={{
-                            paddingTop: 10,
-                            padding: 20,
-                            paddingBottom: 10
+                            width: "200%",
+                            flex: 1,
+                            justifyContent: "center",
+                            alignContent: "center"
                         }}
                         buttonColor="#011689"
                         icon="login"
