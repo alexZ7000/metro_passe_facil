@@ -26,7 +26,7 @@ export default function Login() {
                 <ImageBackground
                     source={metroLogo}
                     style={{
-                        width: isWeb ? "200%" : 200,
+                        width: 200,
                         height: 200,
                         marginLeft: "auto",
                         marginRight: "auto"
@@ -57,7 +57,7 @@ export default function Login() {
                 >
                     <Button
                         style={{
-                            width: 200,
+                            width: isWeb ? "200%" : 200,
                             justifyContent: "center",
                             alignContent: "center"
                         }}
