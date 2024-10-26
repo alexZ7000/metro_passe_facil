@@ -29,6 +29,9 @@ export default function BottomNavbar() {
                         if (route.key === "live") {
                             navigation.navigate("Teste");
                         }
+                        if (route.key === "add-person") {
+                            navigation.navigate("CadastroTeste");
+                        }
                         setIndex(idx);
                     }}
                     style={[
