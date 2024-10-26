@@ -1,11 +1,7 @@
-import BottomNavBar from "@components/nav/BottomNavbar";
-import Navbar from "@components/nav/Navbar";
-import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { IconButton as PaperIconButton } from "react-native-paper";
 
 export default function LiveMonitoring() {
-    const [index, setIndex] = useState(0);
     const routes = [
         { key: "camera1", icon: "camera" },
         { key: "camera2", icon: "camera" }
@@ -13,20 +9,17 @@ export default function LiveMonitoring() {
 
     return (
         <View style={styles.container}>
-            <Navbar />
             <View style={styles.innerContainer}>
-                {routes.map((route, idx) => (
+                {routes.map((route, _) => (
                     <View style={styles.blueBox} key={route.key}>
                         <PaperIconButton
                             icon={route.icon}
                             iconColor="#fff"
                             size={30}
-                            onPress={() => setIndex(idx)}
                         />
                     </View>
                 ))}
             </View>
-            <BottomNavBar index={index} setIndex={setIndex} />
         </View>
     );
 }

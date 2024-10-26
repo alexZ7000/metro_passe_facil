@@ -49,7 +49,7 @@ export default function Login() {
                         buttonColor="#011689"
                         icon="login"
                         mode="contained"
-                        onPress={() => navigation.navigate("LiveMonitoring")}
+                        onPress={() => navigation.navigate("MainTabs")}
                     >
                         Entrar
                     </Button>
