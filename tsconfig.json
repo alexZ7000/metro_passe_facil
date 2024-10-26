@@ -14,7 +14,7 @@
             "@enums/*": ["./src/app/shared/enums/*"],
             "@@types/*": ["./src/app/shared/@types/*"],
             "@functions/*": ["./src/app/shared/functions/*"],
-            "@interfaces/*": ["./src/app/shared/interfaces/*"],
+            "@interfaces/*": ["./src/app/shared/interfaces/*"]
         }
     },
     "extends": "expo/tsconfig.base"

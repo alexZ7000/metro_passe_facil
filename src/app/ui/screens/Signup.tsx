@@ -1,6 +1,7 @@
 import metroLogo from "@assets/metro-logo.png";
 import useAppNavigation from "@functions/useAppNavigation";
-import React, { useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useCallback } from "react";
 import {
     View,
     Text,
@@ -8,32 +9,56 @@ import {
     TextInput,
     Image,
     TouchableOpacity,
-    KeyboardAvoidingView,
     Platform,
-    Dimensions
+    KeyboardAvoidingView,
+    Alert
 } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Button, IconButton } from "react-native-paper";
 
-export default function CadastroTeste() {
-    const [nome, setNome] = useState("Meu Nome");
-    const [dataNascimento, setDataNascimento] = useState("dd/mm/aaaa");
-    const [cpfRg, setCpfRg] = useState("xxx.xxx.xxx-xx");
-    const [tipoGratuidade, setTipoGratuidade] = useState("idoso");
-    //   const [termos, setTermos] = useState(false);
+export default function Signup() {
+    const [nome, setNome] = useState("");
+    const [dataNascimento, setDataNascimento] = useState("");
+    const [cpfRg, setCpfRg] = useState("");
+    const [tipoGratuidade, setTipoGratuidade] = useState("");
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const navigation = useAppNavigation();
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                setNome("");
+                setDataNascimento("");
+                setCpfRg("");
+                setTipoGratuidade("");
+            };
+        }, [])
+    );
+
+    const validateFields = () => {
+        if (!nome || !dataNascimento || !cpfRg || !tipoGratuidade) {
+            Alert.alert("Erro", "Todos os campos são obrigatórios!");
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleDateConfirm = (date: Date) => {
+        const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+        setDataNascimento(formattedDate);
+        setDatePickerVisibility(false);
+    };
+
+    const handleCadastro = () => {
+        if (validateFields()) Alert.alert("Sucesso", "Usuário cadastrado!");
+    };
 
     return (
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <View style={styles.sidebar}>
-                <IconButton icon="account-plus" size={30} />
-                <IconButton icon="headphones" size={30} />
-                <View style={styles.circle} />
-                <IconButton icon="exit-to-app" size={30} />
-            </View>
-
             <View style={styles.content}>
                 <Image source={metroLogo} style={styles.logo} />
                 <Text style={styles.title}>Cadastro de Usuários</Text>
@@ -49,20 +74,23 @@ export default function CadastroTeste() {
                         value={nome}
                         onChangeText={setNome}
                     />
-                    <TextInput
+                    <TouchableOpacity
+                        onPress={() => setDatePickerVisibility(true)}
                         style={styles.input}
-                        placeholder="Data de nascimento"
-                        value={dataNascimento}
-                        onChangeText={setDataNascimento}
-                    />
+                    >
+                        <Text style={styles.dateText}>
+                            {dataNascimento || "Data de nascimento"}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.inputRow}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Nº CPF / RG"
+                        placeholder="Nº CPF"
                         value={cpfRg}
                         onChangeText={setCpfRg}
+                        keyboardType="numeric"
                     />
                     <TextInput
                         style={styles.input}
@@ -75,7 +103,7 @@ export default function CadastroTeste() {
                 <Button
                     mode="contained"
                     style={styles.button}
-                    onPress={() => alert("Usuário cadastrado!")}
+                    onPress={handleCadastro}
                 >
                     Cadastrar
                 </Button>
@@ -91,6 +119,14 @@ export default function CadastroTeste() {
                         Entrar
                     </Button>
                 </View>
+
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleDateConfirm}
+                    onCancel={() => setDatePickerVisibility(false)}
+                    date={new Date()} // Data inicial do calendário
+                />
             </View>
         </KeyboardAvoidingView>
     );
@@ -99,26 +135,13 @@ export default function CadastroTeste() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: "row",
-        backgroundColor: "#EEF0F4"
-    },
-    sidebar: {
-        width: 80,
-        backgroundColor: "#9164cc",
-        justifyContent: "space-around",
-        alignItems: "center",
-        paddingVertical: 20
-    },
-    circle: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: "#fff",
-        marginVertical: 10
+        backgroundColor: "#EEF0F4",
+        position: "relative"
     },
     content: {
         flex: 1,
         padding: 20,
+        paddingBottom: 60,
         justifyContent: "center"
     },
     logo: {
@@ -154,16 +177,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#e0e0e0",
         borderRadius: 8,
         padding: 10,
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        justifyContent: "center",
+        alignItems: "center"
     },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 20
-    },
-    checkboxText: {
-        marginLeft: 10,
-        color: "#555"
+    dateText: {
+        color: "black"
     },
     button: {
         backgroundColor: "#011689",

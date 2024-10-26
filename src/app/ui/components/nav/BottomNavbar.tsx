@@ -27,10 +27,10 @@ export default function BottomNavbar() {
                             navigation.navigate("Login");
                         }
                         if (route.key === "live") {
-                            navigation.navigate("Teste");
+                            navigation.navigate("LiveMonitoring");
                         }
                         if (route.key === "add-person") {
-                            navigation.navigate("CadastroTeste");
+                            navigation.navigate("Signup");
                         }
                         setIndex(idx);
                     }}
@@ -46,6 +46,10 @@ export default function BottomNavbar() {
 
 const styles = StyleSheet.create({
     navigationBar: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
