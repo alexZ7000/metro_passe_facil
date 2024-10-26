@@ -125,7 +125,7 @@ export default function Signup() {
                     mode="date"
                     onConfirm={handleDateConfirm}
                     onCancel={() => setDatePickerVisibility(false)}
-                    date={new Date()} // Data inicial do calendário
+                    date={new Date()}
                 />
             </View>
         </KeyboardAvoidingView>
