@@ -3,6 +3,8 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
 
+// FIXME: Ao abrir um teclado na aplicação, o BottomNavbar sobe junto com o teclado, o que não deveria acontecer.
+
 export default function BottomNavbar() {
     const [index, setIndex] = useState(0);
     const routes = [
@@ -27,7 +29,10 @@ export default function BottomNavbar() {
                             navigation.navigate("Login");
                         }
                         if (route.key === "live") {
-                            navigation.navigate("Teste");
+                            navigation.navigate("LiveMonitoring");
+                        }
+                        if (route.key === "add-person") {
+                            navigation.navigate("Signup");
                         }
                         setIndex(idx);
                     }}
@@ -43,6 +48,10 @@ export default function BottomNavbar() {
 
 const styles = StyleSheet.create({
     navigationBar: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
