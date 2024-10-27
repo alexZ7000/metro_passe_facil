@@ -1,6 +1,7 @@
 import metroLogo from "@assets/metro-logo.png";
 import useAppNavigation from "@functions/useAppNavigation";
 import { useFocusEffect } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 import React, { useState, useCallback } from "react";
 import {
     View,
@@ -21,6 +22,7 @@ export default function Signup() {
     const [dataNascimento, setDataNascimento] = useState("");
     const [cpfRg, setCpfRg] = useState("");
     const [tipoGratuidade, setTipoGratuidade] = useState("");
+    const [imageUri, setImageUri] = useState<string | null>(null); // Definição do tipo
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const navigation = useAppNavigation();
 
@@ -31,6 +33,7 @@ export default function Signup() {
                 setDataNascimento("");
                 setCpfRg("");
                 setTipoGratuidade("");
+                setImageUri(null); // Resetar a imagem ao sair
             };
         }, [])
     );
@@ -40,7 +43,6 @@ export default function Signup() {
             Alert.alert("Erro", "Todos os campos são obrigatórios!");
             return false;
         }
-
         return true;
     };
 
@@ -54,6 +56,30 @@ export default function Signup() {
         if (validateFields()) Alert.alert("Sucesso", "Usuário cadastrado!");
     };
 
+    const handleImageUpload = async () => {
+        const permissionResult =
+            await ImagePicker.requestCameraPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            Alert.alert(
+                "Permissão necessária",
+                "Você precisa dar permissão para usar a câmera!"
+            );
+            return;
+        }
+
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
+        });
+
+        if (!result.canceled) {
+            setImageUri(result.assets[0].uri); // Armazena a URI da imagem capturada
+        }
+    };
+
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -63,8 +89,18 @@ export default function Signup() {
                 <Image source={metroLogo} style={styles.logo} />
                 <Text style={styles.title}>Cadastro de Usuários</Text>
 
-                <TouchableOpacity style={styles.imageUpload}>
-                    <IconButton icon="plus" size={40} iconColor="#011689" />
+                <TouchableOpacity
+                    style={styles.imageUpload}
+                    onPress={handleImageUpload}
+                >
+                    {imageUri ? (
+                        <Image
+                            source={{ uri: imageUri }}
+                            style={styles.imagePreview}
+                        />
+                    ) : (
+                        <IconButton icon="plus" size={40} iconColor="#011689" />
+                    )}
                 </TouchableOpacity>
 
                 <View style={styles.inputRow}>
@@ -166,6 +202,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 20
+    },
+    imagePreview: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 8
     },
     inputRow: {
         flexDirection: "row",
