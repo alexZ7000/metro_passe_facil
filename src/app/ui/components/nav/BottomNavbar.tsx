@@ -25,15 +25,14 @@ export default function BottomNavbar() {
                     size={30}
                     iconColor={index === idx ? "#011689" : "#fff"}
                     onPress={() => {
-                        if (route.key === "logout") {
+                        if (route.key === "logout")
                             navigation.navigate("Login");
-                        }
-                        if (route.key === "live") {
+                        if (route.key === "live")
                             navigation.navigate("LiveMonitoring");
-                        }
-                        if (route.key === "add-person") {
+                        if (route.key === "add-person")
                             navigation.navigate("Signup");
-                        }
+                        if (route.key === "problem")
+                            navigation.navigate("Alerts");
                         setIndex(idx);
                     }}
                     style={[
