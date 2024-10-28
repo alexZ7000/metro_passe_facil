@@ -3,6 +3,7 @@ import Navbar from "@components/nav/Navbar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LiveMonitoring from "@screens/LiveMonitoring";
 import Signup from "@screens/Signup";
+import VideoCall from "@screens/VideoCall";
 import { View, StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ export default function BottomNavRoutes() {
             >
                 <Tab.Screen name="LiveMonitoring" component={LiveMonitoring} />
                 <Tab.Screen name="Signup" component={Signup} />
+                <Tab.Screen name="VideoCall" component={VideoCall} />
             </Tab.Navigator>
             <BottomNavbar />
         </View>

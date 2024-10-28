@@ -31,6 +31,9 @@ export default function BottomNavbar() {
                         if (route.key === "live") {
                             navigation.navigate("LiveMonitoring");
                         }
+                        if (route.key === "headphones") {
+                            navigation.navigate("VideoCall");
+                        }
                         if (route.key === "add-person") {
                             navigation.navigate("Signup");
                         }
