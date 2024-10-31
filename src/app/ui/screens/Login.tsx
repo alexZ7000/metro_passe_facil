@@ -1,6 +1,7 @@
 import metroLogo from "@assets/metro-logo.png";
 import NavHome from "@components/nav/NavHome";
 import useAppNavigation from "@functions/useAppNavigation";
+import salvarDados from "@modules/api";
 import { useState } from "react";
 import {
     Dimensions,
@@ -49,7 +50,7 @@ export default function Login() {
                         buttonColor="#011689"
                         icon="login"
                         mode="contained"
-                        onPress={() => navigation.navigate("MainTabs")}
+                        onPress={() => salvarDados()}
                     >
                         Entrar
                     </Button>
