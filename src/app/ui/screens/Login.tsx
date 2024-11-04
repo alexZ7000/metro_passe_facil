@@ -1,7 +1,6 @@
 import metroLogo from "@assets/metro-logo.png";
 import NavHome from "@components/nav/NavHome";
-import useAppNavigation from "@functions/useAppNavigation";
-import salvarDados from "@modules/api";
+import loginOrRegisterUser from "@modules/Auth/authService";
 import { useState } from "react";
 import {
     Dimensions,
@@ -16,7 +15,22 @@ import { TextInput, Button, Text } from "react-native-paper";
 export default function Login() {
     const [emailInputText, setEmailInputText] = useState("");
     const [passwordInputText, setPasswordInputText] = useState("");
-    const navigation = useAppNavigation();
+
+    async function handleLogin() {
+        try {
+            const user = await loginOrRegisterUser(
+                emailInputText,
+                passwordInputText
+            );
+            if (user.isNewUser) {
+                alert("Conta criada com sucesso! Bem-vindo(a)!");
+            } else {
+                alert("Login realizado com sucesso!");
+            }
+        } catch (error: any) {
+            alert("Erro ao fazer login: " + error.message);
+        }
+    }
 
     return (
         <KeyboardAvoidingView
@@ -38,6 +52,7 @@ export default function Login() {
                 <TextInput
                     mode="outlined"
                     label="Senha"
+                    secureTextEntry
                     value={passwordInputText}
                     placeholder="Insira sua senha"
                     onChangeText={setPasswordInputText}
@@ -50,7 +65,7 @@ export default function Login() {
                         buttonColor="#011689"
                         icon="login"
                         mode="contained"
-                        onPress={() => salvarDados()}
+                        onPress={handleLogin}
                     >
                         Entrar
                     </Button>

@@ -21,6 +21,13 @@ module.exports = function (api) {
                         "@interfaces": "./src/app/shared/interfaces"
                     }
                 }
+            ],
+            [
+                "module:react-native-dotenv",
+                {
+                    moduleName: "@env",
+                    path: ".env"
+                }
             ]
         ],
         env: {
