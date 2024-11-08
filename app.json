@@ -1,38 +1,31 @@
 {
-  "expo": {
-    "name": "metro_passe_facil",
-    "slug": "metro_passe_facil",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "src/app/ui/assets/expo/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "src/app/ui/assets/expo/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "src/app/ui/assets/expo/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "permissions": [
-          "CAMERA",
-          "WRITE_EXTERNAL_STORAGE"
-        ]
-      },
-      "package": "com.anonymous.metro_passe_facil"
-    },
-    "web": {
-      "favicon": "src/app/ui/assets/expo/favicon.png"
-    },
-    "plugins": [
-      "expo-font"
-    ]
-  }
+    "expo": {
+        "name": "metro_passe_facil",
+        "slug": "metro_passe_facil",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "src/app/ui/assets/expo/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "src/app/ui/assets/expo/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "src/app/ui/assets/expo/adaptive-icon.png",
+                "backgroundColor": "#ffffff",
+                "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE"]
+            },
+            "package": "com.anonymous.metro_passe_facil"
+        },
+        "web": {
+            "favicon": "src/app/ui/assets/expo/favicon.png"
+        },
+        "plugins": ["expo-font"]
+    }
 }
