@@ -83,7 +83,8 @@ export default function VideoCall() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        padding: 100
     },
     videoContainer: {
         flex: 1,
