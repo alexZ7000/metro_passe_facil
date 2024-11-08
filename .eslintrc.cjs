@@ -6,7 +6,7 @@ module.exports = {
         "universe/native",
         "plugin:prettier/recommended"
     ],
-    ignorePatterns: ["dist", "node_modules"],
+    ignorePatterns: ["dist", "node_modules", "android", "ios"],
     parser: "@typescript-eslint/parser",
     plugins: ["react", "react-native"],
     parserOptions: {

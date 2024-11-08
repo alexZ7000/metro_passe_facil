@@ -43,6 +43,8 @@ export default function BottomNavbar() {
                             navigation.navigate("LiveMonitoring");
                         if (route.key === "add-person")
                             navigation.navigate("Signup");
+                        if (route.key === "headphones")
+                            navigation.navigate("VideoCall");
                         if (route.key === "problem")
                             navigation.navigate("Alerts");
                         setIndex(idx);

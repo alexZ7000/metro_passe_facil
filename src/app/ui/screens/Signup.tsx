@@ -17,6 +17,8 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Button, IconButton } from "react-native-paper";
 
+// FIXME: Funcionalidade de abrir câmera não funciona para WEB
+
 export default function Signup() {
     const [nome, setNome] = useState("");
     const [dataNascimento, setDataNascimento] = useState("");
