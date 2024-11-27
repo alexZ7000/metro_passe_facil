@@ -40,6 +40,7 @@
         "react-native-collapsible": "^1.6.1",
         "react-native-dotenv": "^3.4.11",
         "react-native-gesture-handler": "~2.16.1",
+        "react-native-get-random-values": "^1.11.0",
         "react-native-mask-input": "^1.2.3",
         "react-native-masked-text": "^1.13.0",
         "react-native-modal-datetime-picker": "^18.0.0",
@@ -51,7 +52,8 @@
         "react-native-toast-message": "^2.2.0",
         "react-native-vector-icons": "^10.2.0",
         "react-native-web": "~0.19.10",
-        "react-native-webrtc": "^124.0.4"
+        "react-native-webrtc": "^124.0.4",
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@babel/core": "^7.24.0",
@@ -59,6 +61,7 @@
         "@types/react": "~18.2.79",
         "@types/react-native-vector-icons": "^6.4.18",
         "@types/react-test-renderer": "^18.3.0",
+        "@types/uuid": "^10.0.0",
         "@typescript-eslint/eslint-plugin": "^6.21.0",
         "babel-plugin-module-resolver": "^5.0.0",
         "eslint": "^8.57.0",
