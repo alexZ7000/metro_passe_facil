@@ -7,8 +7,9 @@ import {
     APP_ID
 } from "@env";
 import { initializeApp } from "firebase/app";
-// import { getFirestore } from "firebase/firestore";
 import { initializeAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: API_KEY,
@@ -22,7 +23,8 @@ const firebaseConfig = {
 console.log("Firebase Config:", firebaseConfig);
 
 const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 const auth = initializeAuth(app);
 
-export { auth };
+export { auth, db, storage };
