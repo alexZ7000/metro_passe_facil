@@ -1,4 +1,6 @@
 import useAppNavigation from "@functions/useAppNavigation";
+import { auth } from "@modules/api";
+import { signOut } from "firebase/auth";
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
@@ -16,6 +18,14 @@ export default function BottomNavbar() {
     ];
     const navigation = useAppNavigation();
 
+    async function handleSignOut() {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.error("Erro ao desconectar: ", error);
+        }
+    }
+
     return (
         <View style={styles.navigationBar}>
             {routes.map((route, idx) => (
@@ -26,11 +36,15 @@ export default function BottomNavbar() {
                     iconColor={index === idx ? "#011689" : "#fff"}
                     onPress={() => {
                         if (route.key === "logout")
-                            navigation.navigate("Login");
+                            handleSignOut().then(() =>
+                                navigation.navigate("Login")
+                            );
                         if (route.key === "live")
                             navigation.navigate("LiveMonitoring");
                         if (route.key === "add-person")
                             navigation.navigate("Signup");
+                        if (route.key === "headphones")
+                            navigation.navigate("VideoCall");
                         if (route.key === "problem")
                             navigation.navigate("Alerts");
                         setIndex(idx);

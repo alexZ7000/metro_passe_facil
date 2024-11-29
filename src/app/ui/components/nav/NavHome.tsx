@@ -14,7 +14,12 @@ export default function NavHome() {
 
             <Appbar.Content
                 mode="center-aligned"
-                titleStyle={{ textAlign: "center", color: "white" }}
+                titleStyle={{
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: 30,
+                    fontWeight: "bold"
+                }}
                 title="Passe Fácil"
             />
 
@@ -27,15 +32,16 @@ export default function NavHome() {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: "#011689"
+        backgroundColor: "#011689",
+        height: "auto"
     },
     metroLogo: {
-        width: 24,
-        height: 24
+        width: 30,
+        height: 30
     },
     metro: {
-        width: 32,
-        height: 32,
+        width: 100,
+        height: 100,
         resizeMode: "contain"
     },
     imageContainer: {

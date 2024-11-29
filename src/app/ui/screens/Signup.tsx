@@ -1,7 +1,10 @@
 import metroLogo from "@assets/metro-logo.png";
 import useAppNavigation from "@functions/useAppNavigation";
+import { db, storage } from "@modules/api"; // Substitua pelo caminho correto
 import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import React, { useState, useCallback } from "react";
 import {
     View,
@@ -16,6 +19,11 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Button, IconButton } from "react-native-paper";
+
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+
+// FIXME: Funcionalidade de abrir câmera não funciona para WEB
 
 export default function Signup() {
     const [nome, setNome] = useState("");
@@ -52,8 +60,42 @@ export default function Signup() {
         setDatePickerVisibility(false);
     };
 
-    const handleCadastro = () => {
-        if (validateFields()) Alert.alert("Sucesso", "Usuário cadastrado!");
+    const handleCadastro = async () => {
+        if (!validateFields()) return;
+
+        try {
+            let imageUrl = null;
+
+            // Upload da imagem, se disponível
+            if (imageUri) {
+                const imageRef = ref(storage, `cadastros/${uuidv4()}`);
+                const response = await fetch(imageUri);
+                const blob = await response.blob();
+                await uploadBytes(imageRef, blob);
+                imageUrl = await getDownloadURL(imageRef); // Obtém a URL pública da imagem
+            }
+
+            // Gerar UUID para o usuário
+            const userId = uuidv4();
+
+            // Salvar dados no Firestore
+            const cadastroData = {
+                id: userId, // Adiciona o UUID como ID único do cadastro
+                nome,
+                dataNascimento,
+                cpfRg,
+                tipoGratuidade,
+                imageUrl
+            };
+
+            await addDoc(collection(db, "cadastros"), cadastroData);
+
+            Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+            navigation.navigate("MainTabs"); // Redireciona para a próxima tela
+        } catch (error) {
+            console.error("Erro ao cadastrar usuário:", error);
+            Alert.alert("Erro", "Não foi possível concluir o cadastro.");
+        }
     };
 
     const handleImageUpload = async () => {
