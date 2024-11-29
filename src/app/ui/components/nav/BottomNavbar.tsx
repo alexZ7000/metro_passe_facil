@@ -12,7 +12,7 @@ export default function BottomNavbar() {
     const routes = [
         { key: "live", icon: "video" },
         { key: "headphones", icon: "headphones" },
-        { key: "problem", icon: "alert" },
+        // { key: "problem", icon: "alert" },
         { key: "add-person", icon: "account-plus" },
         { key: "logout", icon: "logout" }
     ];
@@ -45,8 +45,9 @@ export default function BottomNavbar() {
                             navigation.navigate("Signup");
                         if (route.key === "headphones")
                             navigation.navigate("VideoCall");
-                        if (route.key === "problem")
-                            navigation.navigate("Alerts");
+                        // por enquanto não teremos acompanhameno dos passageiros liberados então deixa comentado
+                        // if (route.key === "problem")
+                        //     navigation.navigate("Alerts");
                         setIndex(idx);
                     }}
                     style={[
@@ -62,9 +63,9 @@ export default function BottomNavbar() {
 const styles = StyleSheet.create({
     navigationBar: {
         position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
+        bottom: 2,
+        left: 10,
+        right: 10,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",

@@ -1,0 +1,39 @@
+import BottomNavbar from "@components/nav/BottomNavbar";
+import Navbar from "@components/nav/Navbar";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Alerts from "@screens/Alerts";
+import LiveMonitoring from "@screens/LiveMonitoring";
+import Signup from "@screens/Signup";
+import VideoCall from "@screens/VideoCall";
+import { View, StyleSheet } from "react-native";
+
+const Tab = createBottomTabNavigator();
+
+export default function BottomNavRoutes() {
+    return (
+        <View style={styles.container}>
+            <Navbar />
+            <Tab.Navigator
+                initialRouteName="LiveMonitoring"
+                screenOptions={{
+                    headerShown: false,
+                    tabBarActiveTintColor: "#fff",
+                    tabBarInactiveTintColor: "#555",
+                    tabBarStyle: { display: "none" }
+                }}
+            >
+                <Tab.Screen name="VideoCall" component={VideoCall} />
+                <Tab.Screen name="LiveMonitoring" component={LiveMonitoring} />
+                <Tab.Screen name="Signup" component={Signup} />
+                <Tab.Screen name="Alerts" component={Alerts} />
+            </Tab.Navigator>
+            <BottomNavbar />
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+});
