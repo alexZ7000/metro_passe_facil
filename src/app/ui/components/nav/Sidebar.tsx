@@ -123,10 +123,16 @@ export default function Sidebar({
                                 ]}
                                 onPress={() => {
                                     if (route.key === "logout") {
-                                        handleSignOut();
-                                    } else {
-                                        navigation.navigate(route.key);
+                                        handleSignOut().then(() =>
+                                            navigation.navigate("Login")
+                                        );
                                     }
+                                    if (route.key === "live")
+                                        navigation.navigate("LiveMonitoring");
+                                    if (route.key === "add-person")
+                                        navigation.navigate("Signup");
+                                    if (route.key === "headphones")
+                                        navigation.navigate("VideoCall");
                                 }}
                             >
                                 <View
