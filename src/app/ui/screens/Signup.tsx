@@ -17,7 +17,8 @@ import {
     Platform,
     KeyboardAvoidingView,
     Alert,
-    useWindowDimensions
+    useWindowDimensions,
+    ScrollView
     // Dimensions,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -26,6 +27,7 @@ import { Button, IconButton } from "react-native-paper";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import BottomNavbar from "@components/nav/BottomNavbar";
+import Header from "@components/nav/Header";
 
 // FIXME: Funcionalidade de abrir câmera não funciona para WEB
 
@@ -129,24 +131,12 @@ export default function Signup() {
         }
     };
 
-    // useEffect(() => {
-    //     const updateLayout = () => {
-    //       setIsWideScreen(Dimensions.get('window').width > 768);
-    //     };
-
-    //     Dimensions.addEventListener('change', updateLayout);
-    //     return () => {
-    //       // Remove event listener on cleanup
-    //       Dimensions.removeEventListener('change', updateLayout);
-    //     };
-    //   }, []);
-
     return (
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <View style={styles.header}>
+            {/* <View style={styles.header}>
                 <View style={styles.headerTitleContainer}>
                     <Feather name="users" size={40} color="white" />
                     <View style={styles.headerSeparator} />
@@ -157,87 +147,112 @@ export default function Signup() {
                     style={styles.logo}
                     resizeMode="contain"
                 />
-            </View>
-            <View style={styles.content}>
-                {/* <Image source={metroLogo} style={styles.logo} />
+            </View> */}
+            <Header
+                title="Cadastro de Usuários"
+                icon="users"
+                backgroundColor="#9164cc"
+                textColor="white"
+            />
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                <View style={styles.content}>
+                    {/* styles.container && */}
+                    {/* <View style={styles.content}> */}
+                    {/* <Image source={metroLogo} style={styles.logo} />
                 <Text style={styles.title}>Cadastro de Usuários</Text> */}
 
-                <View
-                    style={[styles.formRow, !isWideScreen && styles.formColumn]}
-                >
-                    <TouchableOpacity
-                        style={styles.imageUpload}
-                        onPress={handleImageUpload}
+                    <View
+                        style={[
+                            styles.formRow,
+                            !isWideScreen && styles.formColumn
+                        ]}
                     >
-                        {imageUri ? (
-                            <Image
-                                source={{ uri: imageUri }}
-                                style={styles.imagePreview}
-                            />
-                        ) : (
-                            <IconButton
-                                icon="plus"
-                                size={40}
-                                iconColor="#011689"
-                            />
-                        )}
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.imageUpload}
+                            onPress={handleImageUpload}
+                        >
+                            {imageUri ? (
+                                <Image
+                                    source={{ uri: imageUri }}
+                                    style={styles.imagePreview}
+                                />
+                            ) : (
+                                <IconButton
+                                    icon="plus"
+                                    size={40}
+                                    iconColor="#011689"
+                                />
+                            )}
+                        </TouchableOpacity>
 
-                    <View style={styles.inputColumn}>
-                        <View style={styles.inputRow}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Nome"
-                                value={nome}
-                                onChangeText={setNome}
-                            />
-                            <TouchableOpacity
-                                onPress={() => setDatePickerVisibility(true)}
-                                style={styles.input}
-                            >
-                                <Text style={styles.dateText}>
-                                    {dataNascimento || "Data de nascimento"}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <View style={styles.inputColumn}>
+                            <View style={styles.inputGroup}>
+                                <View style={styles.inputRow}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Nome"
+                                        value={nome}
+                                        onChangeText={setNome}
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setDatePickerVisibility(true)
+                                        }
+                                        style={styles.input}
+                                    >
+                                        <Text style={styles.dateText}>
+                                            {dataNascimento ||
+                                                "Data de nascimento"}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                        <View style={styles.inputRow}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Nº CPF"
-                                value={cpfRg}
-                                onChangeText={setCpfRg}
-                                keyboardType="numeric"
-                            />
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Tipo de Gratuidade"
-                                value={tipoGratuidade}
-                                onChangeText={setTipoGratuidade}
-                            />
-                        </View>
+                                <View style={styles.inputRow}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Nº CPF"
+                                        value={cpfRg}
+                                        onChangeText={setCpfRg}
+                                        keyboardType="numeric"
+                                    />
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Tipo de Gratuidade"
+                                        value={tipoGratuidade}
+                                        onChangeText={setTipoGratuidade}
+                                    />
+                                </View>
 
-                        <View style={styles.buttonContainer && styles.inputRow}>
-                            <Button
-                                mode="contained"
-                                style={[
-                                    styles.button,
-                                    { alignSelf: "flex-end" }
-                                ]}
-                                onPress={handleCadastro}
-                            >
-                                Cadastrar
-                            </Button>
+                                <View
+                                    style={
+                                        styles.buttonContainer &&
+                                        styles.inputRow
+                                    }
+                                >
+                                    <Button
+                                        mode="contained"
+                                        style={[
+                                            styles.button,
+                                            { alignSelf: "flex-end" }
+                                        ]}
+                                        onPress={handleCadastro}
+                                    >
+                                        Cadastrar
+                                    </Button>
 
-                            <Button
-                                style={styles.button}
-                                buttonColor="#011689"
-                                icon="login"
-                                mode="contained"
-                                onPress={() => navigation.navigate("MainTabs")}
-                            >
-                                Entrar
-                            </Button>
+                                    <Button
+                                        style={styles.button}
+                                        buttonColor="#011689"
+                                        icon="login"
+                                        mode="contained"
+                                        onPress={() =>
+                                            navigation.navigate("MainTabs")
+                                        }
+                                    >
+                                        Entrar
+                                    </Button>
+                                </View>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -249,61 +264,29 @@ export default function Signup() {
                     onCancel={() => setDatePickerVisibility(false)}
                     date={new Date()}
                 />
-            </View>
-            <BottomNavbar />
+            </ScrollView>
+            {/* <BottomNavbar /> */}
         </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
+    content: {
+        flex: 1,
+        marginTop: 100,
+        paddingHorizontal: 16,
+        height: "100%",
+        paddingLeft: 50,
+        paddingRight: 24, // Aumentado o padding horizontal
+        paddingBottom: 24 // Adicionado padding na parte inferior
+    },
+    scrollViewContent: {
+        flexGrow: 1
+    },
     container: {
         flex: 1,
         backgroundColor: "#EEF0F4",
         position: "relative"
-    },
-    header: {
-        backgroundColor: "#9164cc",
-        padding: 16,
-        width: "70%",
-        alignSelf: "flex-end",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        elevation: 4, // Android shadow
-        shadowColor: "#000", // iOS shadow
-        shadowOffset: {
-            width: -2,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        // position: 'absolute',
-        right: 0,
-        top: "5%",
-        zIndex: 1
-    },
-    headerTitleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    headerSeparator: {
-        width: 10,
-        height: 55,
-        backgroundColor: "white",
-        marginHorizontal: 16
-    },
-    headerTitle: {
-        color: "white",
-        fontSize: 30,
-        fontWeight: "500"
-    },
-    content: {
-        flex: 1,
-        padding: 20,
-        paddingBottom: 10,
-        height: 1000,
-        justifyContent: "center"
     },
     logo: {
         alignSelf: "flex-end",
@@ -321,20 +304,23 @@ const styles = StyleSheet.create({
         paddingLeft: "59%"
     },
     formRow: {
+        flex: 1,
         flexDirection: "row",
-        gap: 16
+        gap: 24
     },
     formColumn: {
         flexDirection: "column"
     },
     imageUpload: {
+        flex: 1,
         backgroundColor: "#e0e0e0",
         width: "50%",
         height: "100%",
         borderRadius: 8,
         alignSelf: "center",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        paddingRight: 20
         // marginBottom: 20
     },
     imagePreview: {
@@ -342,25 +328,45 @@ const styles = StyleSheet.create({
         height: "100%",
         borderRadius: 8
     },
-    inputRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 15
+    inputGroup: {
+        gap: 16
     },
     inputColumn: {
         flex: 1,
         gap: 16,
-        flexDirection: "column"
+        justifyContent: "space-between"
+    },
+    inputRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: 16
     },
     input: {
         flex: 1,
         backgroundColor: "#e0e0e0",
         borderRadius: 8,
-        padding: 10,
-        marginHorizontal: 5,
-        justifyContent: "center",
-        alignItems: "center"
+        padding: "4%",
+        justifyContent: "center"
     },
+    // inputRow: {
+    //     flexDirection: "row",
+    //     justifyContent: "space-between",
+    //     marginBottom: 15
+    // },
+    // inputColumn: {
+    //     flex: 1,
+    //     gap: 16,
+    //     flexDirection: "column"
+    // },
+    // input: {
+    //     flex: 1,
+    //     backgroundColor: "#e0e0e0",
+    //     borderRadius: 8,
+    //     padding: 10,
+    //     marginHorizontal: 5,
+    //     justifyContent: "center",
+    //     alignItems: "center"
+    // },
     dateText: {
         color: "black"
     },
@@ -370,8 +376,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     buttonContainer: {
-        marginTop: 20,
-        marginLeft: "auto",
-        marginRight: "auto"
+        marginTop: "auto"
+        // flexDirection: "row",
+        // justifyContent: "space-between",
+        // gap: 16,
     }
 });
