@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomNavRoutes from "@routes/BottomNavRoutes";
 import Login from "@screens/Login";
+import Signup from "@screens/Signup";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -34,7 +35,7 @@ export default function AppRoutes() {
                         component={BottomNavRoutes}
                     />
                 ) : (
-                    <AuthStack.Screen name="Login" component={Login} />
+                    <AuthStack.Screen name="Login" component={Signup} />
                 )}
             </AuthStack.Navigator>
         </NavigationContainer>
