@@ -239,23 +239,14 @@ export default function Signup() {
                                     />
                                 </View>
 
-                                <View
-                                    style={
-                                        styles.buttonContainer &&
-                                        styles.inputRow
-                                    }
-                                >
+                                <View style={styles.buttonContainer}>
                                     <Button
                                         mode="contained"
-                                        style={[
-                                            styles.button,
-                                            { alignSelf: "flex-start" }
-                                        ]}
+                                        style={styles.button}
                                         onPress={handleCadastro}
                                     >
                                         Cadastrar
                                     </Button>
-
                                     {/* <Button
                                         style={styles.button}
                                         buttonColor="#1694cc"
@@ -370,15 +361,16 @@ const styles = StyleSheet.create({
     dateText: {
         color: "black"
     },
+    buttonContainer: {
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        marginTop: 16
+    },
     button: {
         backgroundColor: "#9164cc",
         borderRadius: 8,
-        paddingVertical: 10
-    },
-    buttonContainer: {
-        marginTop: "auto"
-        // flexDirection: "row",
-        // justifyContent: "space-between",
-        // gap: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 20
     }
 });
