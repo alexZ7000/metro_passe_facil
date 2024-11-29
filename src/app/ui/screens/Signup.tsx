@@ -28,6 +28,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import BottomNavbar from "@components/nav/BottomNavbar";
 import Header from "@components/nav/Header";
+import Sidebar from "@components/nav/Sidebar";
 
 // FIXME: Funcionalidade de abrir câmera não funciona para WEB
 
@@ -141,13 +142,13 @@ export default function Signup() {
                     <Feather name="users" size={40} color="white" />
                     <View style={styles.headerSeparator} />
                     <Text style={styles.headerTitle}>Cadastro de Usuários</Text>
-                </View>
-                <Image
+                    </View>
+                    <Image
                     source={metroLogo}
                     style={styles.logo}
                     resizeMode="contain"
-                />
-            </View> */}
+                    />
+                    </View> */}
             <Header
                 title="Cadastro de Usuários"
                 icon="users"
@@ -160,6 +161,11 @@ export default function Signup() {
                     {/* <View style={styles.content}> */}
                     {/* <Image source={metroLogo} style={styles.logo} />
                 <Text style={styles.title}>Cadastro de Usuários</Text> */}
+                    <Sidebar
+                        activeRoute="add-person"
+                        backgroundColor="#9164cc"
+                        height={400} // Ajuste conforme necessário
+                    />
 
                     <View
                         style={[
@@ -180,14 +186,19 @@ export default function Signup() {
                                 <IconButton
                                     icon="plus"
                                     size={40}
-                                    iconColor="#011689"
+                                    iconColor="#9164cc"
                                 />
                             )}
                         </TouchableOpacity>
 
                         <View style={styles.inputColumn}>
                             <View style={styles.inputGroup}>
-                                <View style={styles.inputRow}>
+                                <View
+                                    style={[
+                                        styles.inputGroup,
+                                        !isWideScreen && styles.inputRow
+                                    ]}
+                                >
                                     <TextInput
                                         style={styles.input}
                                         placeholder="Nome"
@@ -207,7 +218,12 @@ export default function Signup() {
                                     </TouchableOpacity>
                                 </View>
 
-                                <View style={styles.inputRow}>
+                                <View
+                                    style={[
+                                        styles.inputGroup,
+                                        !isWideScreen && styles.inputRow
+                                    ]}
+                                >
                                     <TextInput
                                         style={styles.input}
                                         placeholder="Nº CPF"
@@ -233,16 +249,16 @@ export default function Signup() {
                                         mode="contained"
                                         style={[
                                             styles.button,
-                                            { alignSelf: "flex-end" }
+                                            { alignSelf: "flex-start" }
                                         ]}
                                         onPress={handleCadastro}
                                     >
                                         Cadastrar
                                     </Button>
 
-                                    <Button
+                                    {/* <Button
                                         style={styles.button}
-                                        buttonColor="#011689"
+                                        buttonColor="#1694cc"
                                         icon="login"
                                         mode="contained"
                                         onPress={() =>
@@ -250,7 +266,7 @@ export default function Signup() {
                                         }
                                     >
                                         Entrar
-                                    </Button>
+                                    </Button> */}
                                 </View>
                             </View>
                         </View>
@@ -308,6 +324,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: 24
     },
+    sidebarAdaptor: {
+        marginLeft: 50
+    },
     formColumn: {
         flexDirection: "column"
     },
@@ -319,8 +338,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignSelf: "center",
         justifyContent: "center",
-        alignItems: "center",
-        paddingRight: 20
+        alignItems: "center"
+        // paddingRight: 100
         // marginBottom: 20
     },
     imagePreview: {
@@ -348,30 +367,11 @@ const styles = StyleSheet.create({
         padding: "4%",
         justifyContent: "center"
     },
-    // inputRow: {
-    //     flexDirection: "row",
-    //     justifyContent: "space-between",
-    //     marginBottom: 15
-    // },
-    // inputColumn: {
-    //     flex: 1,
-    //     gap: 16,
-    //     flexDirection: "column"
-    // },
-    // input: {
-    //     flex: 1,
-    //     backgroundColor: "#e0e0e0",
-    //     borderRadius: 8,
-    //     padding: 10,
-    //     marginHorizontal: 5,
-    //     justifyContent: "center",
-    //     alignItems: "center"
-    // },
     dateText: {
         color: "black"
     },
     button: {
-        backgroundColor: "#011689",
+        backgroundColor: "#9164cc",
         borderRadius: 8,
         paddingVertical: 10
     },

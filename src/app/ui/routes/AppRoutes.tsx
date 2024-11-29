@@ -35,7 +35,7 @@ export default function AppRoutes() {
                         component={BottomNavRoutes}
                     />
                 ) : (
-                    <AuthStack.Screen name="Login" component={Signup} />
+                    <AuthStack.Screen name="Login" component={Login} />
                 )}
             </AuthStack.Navigator>
         </NavigationContainer>
