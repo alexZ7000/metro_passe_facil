@@ -29,21 +29,23 @@ const Header: React.FC<HeaderProps> = ({
     const isWideScreen = width > 1000;
 
     return (
-        <View style={[styles.header, { backgroundColor }, style]}>
-            <View style={styles.headerTitleContainer}>
-                <Feather name={icon} size={40} color={textColor} />
-                <View style={styles.headerSeparator} />
-                <Text style={[styles.headerTitle, { color: textColor }]}>
-                    {title}
-                </Text>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+            <View style={[styles.header, { backgroundColor }, style]}>
+                <View style={styles.headerTitleContainer}>
+                    <Feather name={icon} size={40} color={textColor} />
+                    <View style={styles.headerSeparator} />
+                    <Text style={[styles.headerTitle, { color: textColor }]}>
+                        {title}
+                    </Text>
+                </View>
+                {isWideScreen && (
+                    <Image
+                        source={metroLogo}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
+                )}
             </View>
-            {isWideScreen && (
-                <Image
-                    source={metroLogo}
-                    style={styles.logo}
-                    resizeMode="contain"
-                />
-            )}
         </View>
     );
 };
@@ -51,11 +53,10 @@ const Header: React.FC<HeaderProps> = ({
 const styles = StyleSheet.create({
     header: {
         padding: 16,
-        width: "75%",
-        alignSelf: "flex-end",
+        width: "100%",
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
+        justifyContent: "center",
         elevation: 4,
         shadowColor: "#000",
         shadowOffset: {

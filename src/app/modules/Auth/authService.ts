@@ -1,4 +1,5 @@
 import { auth } from "@modules/api";
+import getFirebaseErrorMessage from "@shared/validations/getFirebaseErrorMessage";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword
@@ -25,12 +26,14 @@ export default async function loginOrRegisterUser(
                 );
                 return { user: userCredential.user, isNewUser: false };
             } catch (loginError: any) {
-                console.error("Erro ao fazer login:", loginError.message);
-                throw loginError;
+                const friendlyMessage = getFirebaseErrorMessage(
+                    loginError.code
+                );
+                throw new Error(friendlyMessage);
             }
         } else {
-            console.error("Erro ao registrar:", registerError.message);
-            throw registerError;
+            const friendlyMessage = getFirebaseErrorMessage(registerError.code);
+            throw new Error(friendlyMessage);
         }
     }
 }

@@ -2,11 +2,16 @@
 
 ## <picture><source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.webp" type="image/webp"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="32" height="32"></picture> Como rodar o projeto?
 
-Rode esse comando na raiz do projeto:
+1. Instale as dependências do projeto:
+    ```
+    npm install
+    ```
 
-```
-npx expo start
-```
+2. Rode esse comando na raiz do projeto:
+
+    ```
+    npx expo start
+    ```
 
 versão do NodeJS 20.11.0
 

@@ -1,50 +1,39 @@
-import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import permissionToOpenCamera from "@shared/validations/permissionToOpenCamera";
+import React, { useCallback, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { IconButton, Button } from "react-native-paper";
 
 export default function PhotoCapture() {
-    const [imageUri, setImageUri] = useState<string | null>(null); // Para armazenar a URI da imagem
+    const [imageUri, setImageUri] = useState<string | null>(null);
 
-    // Função que solicita permissão e abre a câmera
     const handleImageUpload = async () => {
-        const permissionResult =
-            await ImagePicker.requestCameraPermissionsAsync();
-
-        if (permissionResult.granted === false) {
-            Alert.alert(
-                "Permissão necessária",
-                "Você precisa dar permissão para usar a câmera!"
-            );
-            return;
-        }
-
-        const result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1
-        });
-
-        if (!result.canceled) {
-            setImageUri(result.assets[0].uri); // Armazena a URI da imagem capturada
-        }
+        const permissionResult = await permissionToOpenCamera();
+        permissionResult
+            ? setImageUri(permissionResult)
+            : Alert.alert(
+                  "Permissão necessária",
+                  "Você precisa dar permissão para usar a câmera!"
+              );
     };
 
-    // Função para comparar a imagem capturada com algum outro critério
     const handleCompare = () => {
         if (!imageUri) {
             Alert.alert("Erro", "Primeiro, capture uma foto para comparar.");
             return;
         }
 
-        // Lógica de comparação aqui (exemplo fictício)
         Alert.alert("Comparar", "A foto foi comparada com sucesso!");
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            return () => setImageUri(null);
+        }, [])
+    );
+
     return (
         <View style={styles.container}>
-            {/* Botão de captura de foto */}
             <TouchableOpacity
                 style={styles.imageUpload}
                 onPress={handleImageUpload}
@@ -59,7 +48,6 @@ export default function PhotoCapture() {
                 )}
             </TouchableOpacity>
 
-            {/* Botão para comparar */}
             <Button
                 mode="contained"
                 style={styles.button}

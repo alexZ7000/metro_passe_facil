@@ -1,12 +1,10 @@
-import metroLogo from "@assets/metro-logo.png";
-import { Feather } from "@expo/vector-icons";
 import useAppNavigation from "@functions/useAppNavigation";
-import { db, storage } from "@modules/api"; // Substitua pelo caminho correto
+import { db, storage } from "@modules/api";
 import { useFocusEffect } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
+import permissionToOpenCamera from "@shared/validations/permissionToOpenCamera";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import {
     View,
     Text,
@@ -26,7 +24,6 @@ import { Button, IconButton } from "react-native-paper";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import BottomNavbar from "@components/nav/BottomNavbar";
 import Header from "@components/nav/Header";
 import Sidebar from "@components/nav/Sidebar";
 
@@ -37,10 +34,9 @@ export default function Signup() {
     const [dataNascimento, setDataNascimento] = useState("");
     const [cpfRg, setCpfRg] = useState("");
     const [tipoGratuidade, setTipoGratuidade] = useState("");
-    const [imageUri, setImageUri] = useState<string | null>(null); // Definição do tipo
+    const [imageUri, setImageUri] = useState<string | null>(null);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const navigation = useAppNavigation();
-    // const [isWideScreen, setIsWideScreen] = useState(Dimensions.get('window').width > 768);
     const { width } = useWindowDimensions();
     const isWideScreen = width > 1000;
 
@@ -64,6 +60,18 @@ export default function Signup() {
         return true;
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                setNome("");
+                setDataNascimento("");
+                setCpfRg("");
+                setTipoGratuidade("");
+                setImageUri(null);
+            };
+        }, [])
+    );
+
     const handleDateConfirm = (date: Date) => {
         const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
         setDataNascimento(formattedDate);
@@ -76,7 +84,6 @@ export default function Signup() {
         try {
             let imageUrl = null;
 
-            // Upload da imagem, se disponível
             if (imageUri) {
                 const imageRef = ref(storage, `cadastros/${uuidv4()}`);
                 const response = await fetch(imageUri);
@@ -85,12 +92,10 @@ export default function Signup() {
                 imageUrl = await getDownloadURL(imageRef); // Obtém a URL pública da imagem
             }
 
-            // Gerar UUID para o usuário
             const userId = uuidv4();
 
-            // Salvar dados no Firestore
             const cadastroData = {
-                id: userId, // Adiciona o UUID como ID único do cadastro
+                id: userId,
                 nome,
                 dataNascimento,
                 cpfRg,
@@ -101,7 +106,7 @@ export default function Signup() {
             await addDoc(collection(db, "cadastros"), cadastroData);
 
             Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
-            navigation.navigate("MainTabs"); // Redireciona para a próxima tela
+            navigation.navigate("MainTabs");
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
             Alert.alert("Erro", "Não foi possível concluir o cadastro.");
@@ -109,27 +114,13 @@ export default function Signup() {
     };
 
     const handleImageUpload = async () => {
-        const permissionResult =
-            await ImagePicker.requestCameraPermissionsAsync();
-
-        if (permissionResult.granted === false) {
-            Alert.alert(
-                "Permissão necessária",
-                "Você precisa dar permissão para usar a câmera!"
-            );
-            return;
-        }
-
-        const result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1
-        });
-
-        if (!result.canceled) {
-            setImageUri(result.assets[0].uri); // Armazena a URI da imagem capturada
-        }
+        const permissionResult = await permissionToOpenCamera();
+        permissionResult
+            ? setImageUri(permissionResult)
+            : Alert.alert(
+                  "Permissão necessária",
+                  "Você precisa dar permissão para usar a câmera!"
+              );
     };
 
     return (

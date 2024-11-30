@@ -1,5 +1,5 @@
 import metroLogo from "@assets/metro-logo.png";
-import NavHome from "@components/nav/NavHome";
+import Navbar from "@components/nav/Navbar";
 import loginOrRegisterUser from "@modules/Auth/authService";
 import { useState } from "react";
 import {
@@ -8,27 +8,45 @@ import {
     Platform,
     View,
     StyleSheet,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from "react-native";
-import { TextInput, Button, Text } from "react-native-paper";
+import { TextInput, Button, Text, ActivityIndicator } from "react-native-paper";
 
 export default function Login() {
     const [emailInputText, setEmailInputText] = useState("");
     const [passwordInputText, setPasswordInputText] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    function validateFields() {
+        if (!emailInputText) {
+            Alert.alert("Erro", "E-mail não pode ser vazio");
+            return false;
+        }
+        if (!passwordInputText) {
+            Alert.alert("Erro", "Senha não pode ser vazia");
+            return false;
+        }
+        return true;
+    }
 
     async function handleLogin() {
+        if (!validateFields()) return;
+        setIsLoading(true);
         try {
             const user = await loginOrRegisterUser(
                 emailInputText,
                 passwordInputText
             );
-            if (user.isNewUser) {
-                alert("Conta criada com sucesso! Bem-vindo(a)!");
-            } else {
-                alert("Login realizado com sucesso!");
-            }
+            if (user.isNewUser)
+                Alert.alert(
+                    "Sucesso",
+                    "Conta criada com sucesso! Bem-vindo(a)!"
+                );
         } catch (error: any) {
-            alert("Erro ao fazer login: " + error.message);
+            Alert.alert("Erro", "Erro ao fazer login: " + error.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -37,7 +55,7 @@ export default function Login() {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <NavHome />
+            <Navbar />
             <View style={styles.innerContainer}>
                 <ImageBackground source={metroLogo} style={styles.logo} />
                 <TextInput
@@ -63,11 +81,15 @@ export default function Login() {
                     <Button
                         style={[styles.button, { width: "100%" }]}
                         buttonColor="#011689"
-                        icon="login"
                         mode="contained"
                         onPress={handleLogin}
+                        disabled={isLoading}
                     >
-                        Entrar
+                        {isLoading ? (
+                            <ActivityIndicator color="#FFF" /> // Spinner visual
+                        ) : (
+                            "Entrar"
+                        )}
                     </Button>
                 </View>
                 <Text style={styles.footerText} variant="bodySmall">
