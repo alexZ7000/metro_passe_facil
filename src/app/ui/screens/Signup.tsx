@@ -1,3 +1,5 @@
+import Header from "@components/nav/Header";
+import Sidebar from "@components/nav/Sidebar";
 import useAppNavigation from "@functions/useAppNavigation";
 import { db, storage } from "@modules/api";
 import { useFocusEffect } from "@react-navigation/native";
@@ -21,11 +23,7 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Button, IconButton } from "react-native-paper";
-
-import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import Header from "@components/nav/Header";
-import Sidebar from "@components/nav/Sidebar";
 
 // FIXME: Funcionalidade de abrir câmera não funciona para WEB
 

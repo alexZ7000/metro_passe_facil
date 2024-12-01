@@ -18,8 +18,7 @@
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "src/app/ui/assets/expo/adaptive-icon.png",
-                "backgroundColor": "#ffffff",
-                "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE"]
+                "backgroundColor": "#ffffff"
             },
             "package": "com.anonymous.metro_passe_facil"
         },

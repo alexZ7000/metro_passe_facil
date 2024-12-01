@@ -1,7 +1,6 @@
 import BottomNavbar from "@components/nav/BottomNavbar";
 import Navbar from "@components/nav/Navbar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Alerts from "@screens/Alerts";
 import LiveMonitoring from "@screens/LiveMonitoring";
 import Signup from "@screens/Signup";
 import VideoCall from "@screens/VideoCall";
@@ -25,7 +24,6 @@ export default function BottomNavRoutes() {
                 <Tab.Screen name="VideoCall" component={VideoCall} />
                 <Tab.Screen name="LiveMonitoring" component={LiveMonitoring} />
                 <Tab.Screen name="Signup" component={Signup} />
-                <Tab.Screen name="Alerts" component={Alerts} />
             </Tab.Navigator>
             <BottomNavbar />
         </View>
