@@ -1,6 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import useAppNavigation from "@functions/useAppNavigation";
 import { auth } from "@modules/api";
+import { useNavigationState } from "@react-navigation/native";
 import { signOut } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import {
@@ -13,23 +14,25 @@ import {
 } from "react-native";
 
 interface SidebarProps {
-    activeRoute: string;
-    backgroundColor: string;
     height?: number;
+    activeRoute: string;
 }
 
-export default function Sidebar({
-    activeRoute,
-    backgroundColor,
-    height
-}: SidebarProps) {
+export default function Sidebar({ height, activeRoute }: SidebarProps) {
     const [isExpanded, setIsExpanded] = useState(false);
     const { width } = useWindowDimensions();
     const navigation = useAppNavigation();
 
     const animatedHeight = useState(new Animated.Value(60))[0];
-
     const sidebarHeight = height || 400;
+
+    const routeName = useNavigationState((state) => {
+        let route = state.routes[state.index];
+        while (route.state && route.state.index !== undefined) {
+            route = route.state.routes[route.state.index] as any;
+        }
+        return route.name;
+    });
 
     useEffect(() => {
         const handleResize = () => {
@@ -42,7 +45,6 @@ export default function Sidebar({
         };
 
         handleResize();
-
         const subscription = Dimensions.addEventListener(
             "change",
             handleResize
@@ -56,19 +58,19 @@ export default function Sidebar({
     const toggleSidebar = () => {
         const newIsExpanded = !isExpanded;
         setIsExpanded(newIsExpanded);
-
         Animated.spring(animatedHeight, {
             toValue: newIsExpanded ? sidebarHeight : 60,
             useNativeDriver: false
         }).start();
     };
 
-    const routes = [
-        { key: "live", icon: "video" },
-        { key: "headphones", icon: "headphones" },
-        { key: "add-person", icon: "user-plus" },
-        { key: "logout", icon: "log-out" }
-    ];
+    const screenColors: Record<string, string> = {
+        LiveMonitoring: "#179330",
+        VideoCall: "#f7b731",
+        Signup: "#9164cc"
+    };
+
+    const backgroundColor = screenColors[activeRoute] || "#179330";
 
     async function handleSignOut() {
         try {
@@ -84,10 +86,7 @@ export default function Sidebar({
             <Animated.View
                 style={[
                     styles.sidebar,
-                    {
-                        height: animatedHeight,
-                        backgroundColor
-                    }
+                    { height: animatedHeight, backgroundColor }
                 ]}
             >
                 <TouchableOpacity
@@ -113,41 +112,49 @@ export default function Sidebar({
                     ]}
                 >
                     <View style={styles.navItems}>
-                        {routes.map((route) => (
+                        {[
+                            "VideoCall",
+                            "LiveMonitoring",
+                            "Signup",
+                            "Logout"
+                        ].map((route) => (
                             <TouchableOpacity
-                                key={route.key}
+                                key={route}
                                 style={[
                                     styles.navItem,
-                                    activeRoute === route.key &&
-                                        styles.navItemActive
+                                    routeName === route && styles.navItemActive
                                 ]}
                                 onPress={() => {
-                                    if (route.key === "logout") {
+                                    if (route === "Logout") {
                                         handleSignOut().then(() =>
                                             navigation.navigate("Login")
                                         );
+                                    } else {
+                                        navigation.navigate(route);
                                     }
-                                    if (route.key === "live")
-                                        navigation.navigate("LiveMonitoring");
-                                    if (route.key === "add-person")
-                                        navigation.navigate("Signup");
-                                    if (route.key === "headphones")
-                                        navigation.navigate("VideoCall");
                                 }}
                             >
                                 <View
                                     style={[
                                         styles.iconContainer,
-                                        activeRoute === route.key &&
+                                        routeName === route &&
                                             styles.activeIconContainer
                                     ]}
                                 >
                                     <Feather
-                                        name={route.icon as any}
+                                        name={
+                                            route === "VideoCall"
+                                                ? "headphones"
+                                                : route === "LiveMonitoring"
+                                                  ? "video"
+                                                  : route === "Signup"
+                                                    ? "user"
+                                                    : "log-out"
+                                        }
                                         size={24}
                                         color={
-                                            activeRoute === route.key
-                                                ? backgroundColor
+                                            routeName === route
+                                                ? "#000"
                                                 : "#FFF"
                                         }
                                     />
@@ -184,12 +191,12 @@ const styles = StyleSheet.create({
     hamburger: {
         padding: 18,
         alignItems: "center",
-        zIndex: 2 // Garante que o botão fique acima dos outros elementos
+        zIndex: 2
     },
     content: {
         flex: 1,
         justifyContent: "flex-end",
-        paddingBottom: 10 // Adiciona um espaço na parte inferior
+        paddingBottom: 10
     },
     navItems: {
         alignItems: "center",

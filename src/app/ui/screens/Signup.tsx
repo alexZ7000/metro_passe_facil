@@ -19,7 +19,6 @@ import {
     Alert,
     useWindowDimensions,
     ScrollView
-    // Dimensions,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Button, IconButton } from "react-native-paper";
@@ -152,7 +151,6 @@ export default function Signup() {
                 <Text style={styles.title}>Cadastro de Usuários</Text> */}
                     <Sidebar
                         activeRoute="add-person"
-                        backgroundColor="#9164cc"
                         height={400} // Ajuste conforme necessário
                     />
 

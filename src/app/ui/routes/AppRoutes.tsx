@@ -2,9 +2,8 @@ import IAppRoutes from "@interfaces/IAppRoutes";
 import { auth } from "@modules/api";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BottomNavRoutes from "@routes/BottomNavRoutes";
+import SidebarNavRoutes from "@routes/SidebarNavRoutes";
 import Login from "@screens/Login";
-import Signup from "@screens/Signup";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -32,7 +31,7 @@ export default function AppRoutes() {
                 {user ? (
                     <AuthStack.Screen
                         name="MainTabs"
-                        component={BottomNavRoutes}
+                        component={SidebarNavRoutes}
                     />
                 ) : (
                     <AuthStack.Screen name="Login" component={Login} />

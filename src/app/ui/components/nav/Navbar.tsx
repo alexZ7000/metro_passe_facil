@@ -1,11 +1,27 @@
 import metroLogo from "@assets/metro-logo.png";
 import metro from "@assets/metro.png";
+import { useNavigationState } from "@react-navigation/native";
 import { StyleSheet, Image, View } from "react-native";
 import { Appbar } from "react-native-paper";
 
-export default function Navbar() {
+export default function Navbar({ activeRoute }: { activeRoute: string }) {
+    const routeName = useNavigationState((state) => {
+        let route = state.routes[state.index];
+        while (route.state && route.state.index !== undefined) {
+            route = route.state.routes[route.state.index] as any;
+        }
+        return route.name;
+    });
+
+    const screenColors: Record<string, string> = {
+        LiveMonitoring: "#179330",
+        VideoCall: "#f7b731",
+        Signup: "#9164cc"
+    };
+
+    const backgroundColor = screenColors[activeRoute] || "#179330";
     return (
-        <Appbar.Header style={styles.header} mode="center-aligned">
+        <Appbar.Header style={{ backgroundColor }} mode="center-aligned">
             <Appbar.Action
                 icon={() => (
                     <Image source={metroLogo} style={styles.metroLogo} />
@@ -26,9 +42,6 @@ export default function Navbar() {
 }
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: "#011689"
-    },
     metroLogo: {
         width: 24,
         height: 24
