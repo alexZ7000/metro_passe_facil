@@ -3,6 +3,7 @@
 ## <picture><source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.webp" type="image/webp"><img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="32" height="32"></picture> Como rodar o projeto?
 
 1. Instale as dependências do projeto:
+
     ```
     npm install
     ```
