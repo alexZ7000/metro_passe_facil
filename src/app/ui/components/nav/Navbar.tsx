@@ -4,25 +4,7 @@ import { StyleSheet, Image, View } from "react-native";
 import { Appbar } from "react-native-paper";
 
 export default function Navbar() {
-    return (
-        <Appbar.Header style={styles.header} mode="center-aligned">
-            <Appbar.Action
-                icon={() => (
-                    <Image source={metroLogo} style={styles.metroLogo} />
-                )}
-            />
-
-            <Appbar.Content
-                mode="center-aligned"
-                titleStyle={{ textAlign: "center", color: "white" }}
-                title="Passe Fácil"
-            />
-
-            <View style={styles.imageContainer}>
-                <Image source={metro} style={styles.metro} />
-            </View>
-        </Appbar.Header>
-    );
+    return <></>;
 }
 
 const styles = StyleSheet.create({

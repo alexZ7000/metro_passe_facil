@@ -1,31 +1,51 @@
+import Header from "@components/nav/Header";
+import Sidebar from "@components/nav/Sidebar";
 import { useFocusEffect } from "@react-navigation/native";
 import permissionToOpenCamera from "@shared/validations/permissionToOpenCamera";
 import React, { useCallback, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { IconButton, Button } from "react-native-paper";
 
-export default function PhotoCapture() {
+interface PhotoCaptureProps {
+    onPhotoCapture?: (uri: string) => void;
+    onPhotoCompare?: () => void;
+}
+
+export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
+    onPhotoCapture,
+    onPhotoCompare
+}) => {
     const [imageUri, setImageUri] = useState<string | null>(null);
 
-    const handleImageUpload = async () => {
-        const permissionResult = await permissionToOpenCamera();
-        permissionResult
-            ? setImageUri(permissionResult)
-            : Alert.alert(
-                  "Permissão necessária",
-                  "Você precisa dar permissão para usar a câmera!"
-              );
+    const capturePhoto = async () => {
+        try {
+            const capturedImageUri = await permissionToOpenCamera();
+
+            if (capturedImageUri) {
+                setImageUri(capturedImageUri);
+                onPhotoCapture?.(capturedImageUri);
+            } else {
+                Alert.alert(
+                    "Permissão necessária",
+                    "Você precisa dar permissão para usar a câmera!"
+                );
+            }
+        } catch (error) {
+            Alert.alert("Erro", "Falha ao capturar foto");
+        }
     };
 
-    const handleCompare = () => {
+    const comparePhoto = () => {
         if (!imageUri) {
             Alert.alert("Erro", "Primeiro, capture uma foto para comparar.");
             return;
         }
 
-        Alert.alert("Comparar", "A foto foi comparada com sucesso!");
+        onPhotoCompare?.() ??
+            Alert.alert("Comparar", "A foto foi comparada com sucesso!");
     };
 
+    // Reset image when screen comes into focus
     useFocusEffect(
         useCallback(() => {
             return () => setImageUri(null);
@@ -33,31 +53,52 @@ export default function PhotoCapture() {
     );
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.imageUpload}
-                onPress={handleImageUpload}
-            >
-                {imageUri ? (
-                    <Image
-                        source={{ uri: imageUri }}
-                        style={styles.imagePreview}
-                    />
-                ) : (
-                    <IconButton icon="camera" size={40} iconColor="#011689" />
-                )}
-            </TouchableOpacity>
+        <>
+            <Header
+                title="Cadastro de Usuários"
+                icon="users"
+                backgroundColor="#179330"
+                textColor="white"
+            />
+            <View style={styles.container}>
+                <TouchableOpacity
+                    style={styles.imageUpload}
+                    onPress={capturePhoto}
+                    testID="photo-capture-touchable"
+                >
+                    {imageUri ? (
+                        <Image
+                            source={{ uri: imageUri }}
+                            style={styles.imagePreview}
+                            testID="captured-image"
+                        />
+                    ) : (
+                        <IconButton
+                            icon="camera"
+                            size={40}
+                            iconColor="#179330"
+                            testID="camera-icon"
+                        />
+                    )}
+                </TouchableOpacity>
 
-            <Button
-                mode="contained"
-                style={styles.button}
-                onPress={handleCompare}
-            >
-                Comparar
-            </Button>
-        </View>
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    onPress={comparePhoto}
+                    testID="compare-button"
+                >
+                    Comparar
+                </Button>
+                <Sidebar
+                    activeRoute="live"
+                    backgroundColor="#179330"
+                    height={400}
+                />
+            </View>
+        </>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -81,8 +122,10 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     button: {
-        backgroundColor: "#011689",
+        backgroundColor: "#179330",
         borderRadius: 8,
         paddingVertical: 10
     }
 });
+
+export default PhotoCapture;
