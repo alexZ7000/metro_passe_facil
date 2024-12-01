@@ -184,12 +184,12 @@ const styles = StyleSheet.create({
     hamburger: {
         padding: 18,
         alignItems: "center",
-        zIndex: 2 // Garante que o botão fique acima dos outros elementos
+        zIndex: 2
     },
     content: {
         flex: 1,
         justifyContent: "flex-end",
-        paddingBottom: 10 // Adiciona um espaço na parte inferior
+        paddingBottom: 10
     },
     navItems: {
         alignItems: "center",

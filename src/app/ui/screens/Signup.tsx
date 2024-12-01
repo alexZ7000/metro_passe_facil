@@ -128,18 +128,6 @@ export default function Signup() {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            {/* <View style={styles.header}>
-                <View style={styles.headerTitleContainer}>
-                    <Feather name="users" size={40} color="white" />
-                    <View style={styles.headerSeparator} />
-                    <Text style={styles.headerTitle}>Cadastro de Usuários</Text>
-                    </View>
-                    <Image
-                    source={metroLogo}
-                    style={styles.logo}
-                    resizeMode="contain"
-                    />
-                    </View> */}
             <Header
                 title="Cadastro de Usuários"
                 icon="users"
@@ -148,14 +136,10 @@ export default function Signup() {
             />
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.content}>
-                    {/* styles.container && */}
-                    {/* <View style={styles.content}> */}
-                    {/* <Image source={metroLogo} style={styles.logo} />
-                <Text style={styles.title}>Cadastro de Usuários</Text> */}
                     <Sidebar
                         activeRoute="add-person"
                         backgroundColor="#9164cc"
-                        height={400} // Ajuste conforme necessário
+                        height={400}
                     />
 
                     <View
@@ -187,43 +171,39 @@ export default function Signup() {
                                 <View
                                     style={[
                                         styles.inputGroup,
-                                        !isWideScreen && styles.inputRow
+                                        !isWideScreen && styles.inputRow,
+                                        !isWideScreen && styles.grid
                                     ]}
                                 >
                                     <TextInput
-                                        style={styles.input}
+                                        style={styles.fullWidthInput}
                                         placeholder="Nome"
                                         value={nome}
                                         onChangeText={setNome}
                                     />
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            setDatePickerVisibility(true)
-                                        }
-                                        style={styles.input}
-                                    >
-                                        <Text style={styles.dateText}>
-                                            {dataNascimento ||
-                                                "Data de nascimento"}
-                                        </Text>
-                                    </TouchableOpacity>
+                                    <TextInput
+                                        style={styles.fullWidthInput}
+                                        placeholder="Data de nascimento"
+                                        value={dataNascimento}
+                                        onChangeText={setDataNascimento}
+                                    />
                                 </View>
-
                                 <View
                                     style={[
                                         styles.inputGroup,
-                                        !isWideScreen && styles.inputRow
+                                        !isWideScreen && styles.inputRow,
+                                        !isWideScreen && styles.grid
                                     ]}
                                 >
                                     <TextInput
-                                        style={styles.input}
+                                        style={styles.fullWidthInput}
                                         placeholder="Nº CPF"
                                         value={cpfRg}
                                         onChangeText={setCpfRg}
                                         keyboardType="numeric"
                                     />
                                     <TextInput
-                                        style={styles.input}
+                                        style={styles.fullWidthInput}
                                         placeholder="Tipo de Gratuidade"
                                         value={tipoGratuidade}
                                         onChangeText={setTipoGratuidade}
@@ -238,17 +218,6 @@ export default function Signup() {
                                     >
                                         Cadastrar
                                     </Button>
-                                    {/* <Button
-                                        style={styles.button}
-                                        buttonColor="#1694cc"
-                                        icon="login"
-                                        mode="contained"
-                                        onPress={() =>
-                                            navigation.navigate("MainTabs")
-                                        }
-                                    >
-                                        Entrar
-                                    </Button> */}
                                 </View>
                             </View>
                         </View>
@@ -272,11 +241,8 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         marginTop: 100,
-        paddingHorizontal: 16,
-        height: "100%",
-        paddingLeft: 50,
-        paddingRight: 24, // Aumentado o padding horizontal
-        paddingBottom: 24 // Adicionado padding na parte inferior
+        padding: 24,
+        height: "92%"
     },
     scrollViewContent: {
         flexGrow: 1
@@ -304,7 +270,8 @@ const styles = StyleSheet.create({
     formRow: {
         flex: 1,
         flexDirection: "row",
-        gap: 24
+        gap: 24,
+        flexWrap: "wrap"
     },
     sidebarAdaptor: {
         marginLeft: 50
@@ -315,12 +282,14 @@ const styles = StyleSheet.create({
     imageUpload: {
         flex: 1,
         backgroundColor: "#e0e0e0",
-        width: "50%",
-        height: "100%",
+        width: "100%",
+        minHeight: 200,
+        maxHeight: 400,
         borderRadius: 8,
         alignSelf: "center",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: 24
         // paddingRight: 100
         // marginBottom: 20
     },
@@ -330,24 +299,30 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     inputGroup: {
+        width: "100%",
         gap: 16
     },
     inputColumn: {
         flex: 1,
-        gap: 16,
         justifyContent: "space-between"
     },
     inputRow: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        gap: 16
+        justifyContent: "space-between"
     },
     input: {
-        flex: 1,
+        width: "100%",
         backgroundColor: "#e0e0e0",
         borderRadius: 8,
-        padding: "4%",
-        justifyContent: "center"
+        padding: 16,
+        marginBottom: 16
+    },
+    fullWidthInput: {
+        width: "100%",
+        backgroundColor: "#e0e0e0",
+        borderRadius: 8,
+        padding: 16,
+        marginBottom: 16
     },
     dateText: {
         color: "black"
@@ -363,5 +338,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingVertical: 10,
         paddingHorizontal: 20
+    },
+    grid: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between"
     }
 });
