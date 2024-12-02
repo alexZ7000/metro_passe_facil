@@ -1,5 +1,4 @@
 import Header from "@components/nav/Header";
-import Sidebar from "@components/nav/Sidebar";
 import IAppRoutes from "@interfaces/IAppRoutes";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -60,8 +59,6 @@ export const PhotoCapture: React.FC = () => {
                         Detecção de Texto
                     </Button> */}
                 </View>
-
-                <Sidebar activeRoute="live" height={400} />
             </View>
         </>
     );

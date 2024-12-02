@@ -1,13 +1,23 @@
+import useAppNavigation from "@functions/useAppNavigation";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
 
 const FaceComparisonWeb = () => {
+    const navigation = useAppNavigation();
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Comparação Facial</Text>
             <Text style={styles.message}>
                 Esta funcionalidade está disponível apenas no aplicativo móvel.
             </Text>
+            <Button
+                icon="keyboard-backspace"
+                mode="contained"
+                onPress={() => navigation.navigate("LiveMonitoring")}
+            >
+                Voltar
+            </Button>
         </View>
     );
 };

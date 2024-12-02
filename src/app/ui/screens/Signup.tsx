@@ -132,11 +132,6 @@ export default function Signup() {
             />
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.content}>
-                    <Sidebar
-                        activeRoute="add-person"
-                        height={400} // Ajuste conforme necessário
-                    />
-
                     <View
                         style={[
                             styles.formRow,

@@ -1,49 +1,7 @@
-import React, { useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { Button, Appbar } from "react-native-paper";
-import { RTCView, mediaDevices, RTCPeerConnection } from "react-native-webrtc";
-
-const configuration = {
-    iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-};
 
 export default function VideoCall() {
-    const [localStream, setLocalStream] = useState<MediaStream | null>(null);
-    const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
-    const peerConnection = useRef<RTCPeerConnection>(
-        new RTCPeerConnection(configuration)
-    );
-
-    const startLocalStream = async () => {
-        try {
-            const stream = await mediaDevices.getUserMedia({
-                video: true,
-                audio: true
-            });
-            setLocalStream(stream as unknown as MediaStream);
-            stream.getTracks().forEach((track) => {
-                peerConnection.current.addTrack(track, stream);
-            });
-        } catch (error) {
-            console.error("Erro ao acessar câmera/mic:", error);
-        }
-    };
-
-    const initiateCall = async () => {
-        const offer = await peerConnection.current.createOffer({});
-        await peerConnection.current.setLocalDescription(offer);
-    };
-
-    const endCall = () => {
-        peerConnection.current.close();
-        setLocalStream(null);
-        setRemoteStream(null);
-    };
-
-    (peerConnection.current as any).ontrack = (event: RTCTrackEvent) => {
-        setRemoteStream(event.streams[0]);
-    };
-
     return (
         <View style={styles.container}>
             <Appbar.Header>
@@ -51,30 +9,16 @@ export default function VideoCall() {
             </Appbar.Header>
 
             <View style={styles.videoContainer}>
-                {localStream && (
-                    <RTCView
-                        streamURL={localStream?.id || ""}
-                        style={styles.localVideo}
-                    />
-                )}
-                {remoteStream && (
-                    <RTCView
-                        streamURL={localStream?.id || ""}
-                        style={styles.localVideo}
-                    />
-                )}
+                <Text>
+                    Aqui vai ficar o vídeo da videochamada, ela foi tirada para
+                    evitar conflitos no npx expo start
+                </Text>
             </View>
 
             <View style={styles.controls}>
-                <Button mode="contained" onPress={startLocalStream}>
-                    Iniciar Câmera
-                </Button>
-                <Button mode="contained" onPress={initiateCall}>
-                    Iniciar Chamada
-                </Button>
-                <Button mode="contained" onPress={endCall}>
-                    Encerrar Chamada
-                </Button>
+                <Button mode="contained">Iniciar Câmera</Button>
+                <Button mode="contained">Iniciar Chamada</Button>
+                <Button mode="contained">Encerrar Chamada</Button>
             </View>
         </View>
     );

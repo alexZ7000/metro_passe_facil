@@ -1,8 +1,6 @@
 import { firebase } from "@react-native-firebase/ml-vision";
 import { Platform } from "react-native";
 
-import { app } from "../config/firebase";
-
 export interface FaceDetectionResult {
     faces: {
         bounds: {
@@ -21,7 +19,6 @@ export interface FaceDetectionResult {
         probability?: number;
     }[];
 }
-
 interface FaceDetectionResponse {
     faces: {
         boundingBox: {
@@ -40,7 +37,6 @@ interface FaceDetectionResponse {
         probability?: number;
     }[];
 }
-
 export async function detectFace(
     imageUri: string
 ): Promise<FaceDetectionResult> {
@@ -51,7 +47,6 @@ export async function detectFace(
             const result = (await mlInstance.faceDetectorProcessImage(
                 imageUri
             )) as FaceDetectionResponse;
-
             return {
                 faces: result.faces.map((face) => ({
                     bounds: {
