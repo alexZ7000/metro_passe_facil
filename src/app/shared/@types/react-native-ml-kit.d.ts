@@ -1,10 +1,31 @@
-declare module "@react-native-ml-kit/text-recognition" {
-    const TextRecognition: {
-        recognize: (uri: string) => Promise<{ text: string }[]>;
-    };
-    export default TextRecognition;
-}
-
 declare module "@react-native-firebase/ml-vision" {
-    export const firebase: any;
+    interface FaceDetectorResult {
+        faces: {
+            boundingBox: {
+                left: number;
+                top: number;
+                right: number;
+                bottom: number;
+            };
+            landmarks: {
+                [key: string]: {
+                    x: number;
+                    y: number;
+                };
+            };
+            trackingId?: number;
+            probability?: number;
+        }[];
+    }
+
+    interface MLVision {
+        faceDetectorProcessImage: (uri: string) => Promise<FaceDetectorResult>;
+    }
+
+    interface Firebase {
+        ml: () => MLVision;
+        app: () => any;
+    }
+
+    export const firebase: Firebase;
 }

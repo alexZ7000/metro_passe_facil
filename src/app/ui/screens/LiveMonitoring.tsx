@@ -1,31 +1,19 @@
-import { useFocusEffect } from "@react-navigation/native";
-import permissionToOpenCamera from "@shared/validations/permissionToOpenCamera";
+import Header from "@components/nav/Header";
+import Sidebar from "@components/nav/Sidebar";
+import IAppRoutes from "@interfaces/IAppRoutes";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { useCallback, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
-import { IconButton, Button } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
 
-export default function PhotoCapture() {
+type NavigationProp = NativeStackNavigationProp<IAppRoutes>;
+
+export const PhotoCapture: React.FC = () => {
+    const navigation = useNavigation<NavigationProp>();
     const [imageUri, setImageUri] = useState<string | null>(null);
 
-    const handleImageUpload = async () => {
-        const permissionResult = await permissionToOpenCamera();
-        permissionResult
-            ? setImageUri(permissionResult)
-            : Alert.alert(
-                  "Permissão necessária",
-                  "Você precisa dar permissão para usar a câmera!"
-              );
-    };
-
-    const handleCompare = () => {
-        if (!imageUri) {
-            Alert.alert("Erro", "Primeiro, capture uma foto para comparar.");
-            return;
-        }
-
-        Alert.alert("Comparar", "A foto foi comparada com sucesso!");
-    };
-
+    // Reset image when screen comes into focus
     useFocusEffect(
         useCallback(() => {
             return () => setImageUri(null);
@@ -33,31 +21,51 @@ export default function PhotoCapture() {
     );
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.imageUpload}
-                onPress={handleImageUpload}
-            >
-                {imageUri ? (
-                    <Image
-                        source={{ uri: imageUri }}
-                        style={styles.imagePreview}
-                    />
-                ) : (
-                    <IconButton icon="camera" size={40} iconColor="#011689" />
-                )}
-            </TouchableOpacity>
+        <>
+            <Header
+                title="Monitoramento"
+                icon="users"
+                backgroundColor="#179330"
+                textColor="white"
+            />
+            <View style={styles.container}>
+                <View style={styles.buttonGroup}>
+                    <Button
+                        mode="contained"
+                        style={styles.aiButton}
+                        labelStyle={styles.buttonLabel}
+                        icon="face-recognition"
+                        onPress={() => navigation.navigate("FaceDetection")}
+                    >
+                        Detecção de Rosto
+                    </Button>
 
-            <Button
-                mode="contained"
-                style={styles.button}
-                onPress={handleCompare}
-            >
-                Comparar
-            </Button>
-        </View>
+                    <Button
+                        mode="contained"
+                        style={styles.aiButton}
+                        labelStyle={styles.buttonLabel}
+                        icon="face-man"
+                        onPress={() => navigation.navigate("FaceComparison")}
+                    >
+                        Comparação de Rostos
+                    </Button>
+
+                    {/* <Button
+                        mode="contained"
+                        style={styles.aiButton}
+                        labelStyle={styles.buttonLabel}
+                        icon="text-recognition"
+                        onPress={() => navigation.navigate('TextDetection')}
+                    >
+                        Detecção de Texto
+                    </Button> */}
+                </View>
+
+                <Sidebar activeRoute="live" height={400} />
+            </View>
+        </>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -81,8 +89,25 @@ const styles = StyleSheet.create({
         borderRadius: 8
     },
     button: {
-        backgroundColor: "#011689",
+        backgroundColor: "#179330",
         borderRadius: 8,
         paddingVertical: 10
+    },
+    buttonGroup: {
+        width: "90%",
+        gap: 15,
+        marginBottom: 30
+    },
+    aiButton: {
+        backgroundColor: "#179330",
+        borderRadius: 8,
+        paddingVertical: 8,
+        elevation: 2
+    },
+    buttonLabel: {
+        fontSize: 16,
+        fontWeight: "500"
     }
 });
+
+export default PhotoCapture;
