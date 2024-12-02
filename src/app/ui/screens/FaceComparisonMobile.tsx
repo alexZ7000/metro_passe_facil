@@ -1,9 +1,19 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Button, Alert, Platform } from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, View, Button, Alert } from "react-native";
+import {
+    Camera,
+    useCameraDevices,
+    CameraDevice
+} from "react-native-vision-camera";
 
 import { detectFace, FaceDetectionResult } from "../../services/faceDetection";
 
-const FaceComparison: React.FC = () => {
+const FaceComparisonMobile: React.FC = () => {
+    const devices = useCameraDevices();
+    const frontCamera = devices.find(
+        (device) => device.position === "front"
+    ) as CameraDevice | undefined;
+    const camera = useRef<Camera>(null);
     const [faceData1, setFaceData1] = useState<FaceDetectionResult | null>(
         null
     );
@@ -12,22 +22,11 @@ const FaceComparison: React.FC = () => {
     );
 
     const capturePhoto = async () => {
-        if (Platform.OS === "web") {
-            return new Promise<string | null>((resolve) => {
-                const input = document.createElement("input");
-                input.type = "file";
-                input.accept = "image/*";
-                input.onchange = async (e: any) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                        const imageUrl = URL.createObjectURL(file);
-                        resolve(imageUrl);
-                    } else {
-                        resolve(null);
-                    }
-                };
-                input.click();
+        if (camera.current) {
+            const photo = await camera.current.takePhoto({
+                flash: "off"
             });
+            return photo.path;
         }
         return null;
     };
@@ -70,8 +69,23 @@ const FaceComparison: React.FC = () => {
         }
     };
 
+    if (!frontCamera) {
+        return (
+            <View style={styles.container}>
+                <Button title="Carregando câmera..." disabled />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
+            <Camera
+                ref={camera}
+                style={styles.camera}
+                device={frontCamera}
+                isActive
+                photo
+            />
             <View style={styles.buttonContainer}>
                 <Button
                     title="Capturar Primeiro Rosto"
@@ -89,27 +103,22 @@ const FaceComparison: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    camera: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f5f5f5"
+        width: "100%"
     },
     buttonContainer: {
-        width: "90%",
-        maxWidth: 400,
-        gap: 15,
+        position: "absolute",
+        bottom: 30,
+        left: 0,
+        right: 0,
+        alignItems: "center",
+        gap: 10,
         padding: 20,
-        backgroundColor: "rgba(255,255,255,0.9)",
-        borderRadius: 10,
-        elevation: 3,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84
+        backgroundColor: "rgba(0,0,0,0.3)"
     }
 });
 
-export default FaceComparison;
+export default FaceComparisonMobile;

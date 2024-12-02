@@ -1,10 +1,14 @@
 import Header from "@components/nav/Header";
 import Sidebar from "@components/nav/Sidebar";
-import { useFocusEffect } from "@react-navigation/native";
+import IAppRoutes from "@interfaces/IAppRoutes";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import permissionToOpenCamera from "@shared/validations/permissionToOpenCamera";
 import React, { useCallback, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { IconButton, Button } from "react-native-paper";
+
+type NavigationProp = NativeStackNavigationProp<IAppRoutes>;
 
 interface PhotoCaptureProps {
     onPhotoCapture?: (uri: string) => void;
@@ -15,6 +19,7 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
     onPhotoCapture,
     onPhotoCompare
 }) => {
+    const navigation = useNavigation<NavigationProp>();
     const [imageUri, setImageUri] = useState<string | null>(null);
 
     const capturePhoto = async () => {
@@ -55,41 +60,44 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
     return (
         <>
             <Header
-                title="Cadastro de Usuários"
+                title="Monitoramento"
                 icon="users"
                 backgroundColor="#179330"
                 textColor="white"
             />
             <View style={styles.container}>
-                <TouchableOpacity
-                    style={styles.imageUpload}
-                    onPress={capturePhoto}
-                    testID="photo-capture-touchable"
-                >
-                    {imageUri ? (
-                        <Image
-                            source={{ uri: imageUri }}
-                            style={styles.imagePreview}
-                            testID="captured-image"
-                        />
-                    ) : (
-                        <IconButton
-                            icon="camera"
-                            size={40}
-                            iconColor="#179330"
-                            testID="camera-icon"
-                        />
-                    )}
-                </TouchableOpacity>
+                <View style={styles.buttonGroup}>
+                    <Button
+                        mode="contained"
+                        style={styles.aiButton}
+                        labelStyle={styles.buttonLabel}
+                        icon="face-recognition"
+                        onPress={() => navigation.navigate("FaceDetection")}
+                    >
+                        Detecção de Rosto
+                    </Button>
 
-                <Button
-                    mode="contained"
-                    style={styles.button}
-                    onPress={comparePhoto}
-                    testID="compare-button"
-                >
-                    Comparar
-                </Button>
+                    <Button
+                        mode="contained"
+                        style={styles.aiButton}
+                        labelStyle={styles.buttonLabel}
+                        icon="face-man"
+                        onPress={() => navigation.navigate("FaceComparison")}
+                    >
+                        Comparação de Rostos
+                    </Button>
+
+                    {/* <Button
+                        mode="contained"
+                        style={styles.aiButton}
+                        labelStyle={styles.buttonLabel}
+                        icon="text-recognition"
+                        onPress={() => navigation.navigate('TextDetection')}
+                    >
+                        Detecção de Texto
+                    </Button> */}
+                </View>
+
                 <Sidebar
                     activeRoute="live"
                     backgroundColor="#179330"
@@ -125,6 +133,21 @@ const styles = StyleSheet.create({
         backgroundColor: "#179330",
         borderRadius: 8,
         paddingVertical: 10
+    },
+    buttonGroup: {
+        width: "90%",
+        gap: 15,
+        marginBottom: 30
+    },
+    aiButton: {
+        backgroundColor: "#179330",
+        borderRadius: 8,
+        paddingVertical: 8,
+        elevation: 2
+    },
+    buttonLabel: {
+        fontSize: 16,
+        fontWeight: "500"
     }
 });
 

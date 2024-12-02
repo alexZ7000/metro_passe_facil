@@ -3,10 +3,16 @@ import { auth } from "@modules/api";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomNavRoutes from "@routes/BottomNavRoutes";
-import Login from "@screens/Login";
-import Signup from "@screens/Signup";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
+
+import {
+    Login,
+    Signup,
+    TextDetection,
+    FaceDetection,
+    FaceComparison
+} from "../screens";
 
 const AuthStack = createNativeStackNavigator<IAppRoutes>();
 
@@ -23,19 +29,34 @@ export default function AppRoutes() {
     return (
         <NavigationContainer>
             <AuthStack.Navigator
-                initialRouteName="Login"
                 screenOptions={{
-                    headerTitle: "",
                     headerShown: false
                 }}
             >
                 {user ? (
-                    <AuthStack.Screen
-                        name="MainTabs"
-                        component={BottomNavRoutes}
-                    />
+                    <>
+                        <AuthStack.Screen
+                            name="MainTabs"
+                            component={BottomNavRoutes}
+                        />
+                        <AuthStack.Screen
+                            name="FaceDetection"
+                            component={FaceDetection}
+                        />
+                        <AuthStack.Screen
+                            name="FaceComparison"
+                            component={FaceComparison}
+                        />
+                        <AuthStack.Screen
+                            name="TextDetection"
+                            component={TextDetection}
+                        />
+                    </>
                 ) : (
-                    <AuthStack.Screen name="Login" component={Login} />
+                    <>
+                        <AuthStack.Screen name="Login" component={Login} />
+                        <AuthStack.Screen name="Signup" component={Signup} />
+                    </>
                 )}
             </AuthStack.Navigator>
         </NavigationContainer>
