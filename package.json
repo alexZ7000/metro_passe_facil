@@ -61,6 +61,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.24.0",
+        "@babel/plugin-transform-private-methods": "^7.25.9",
         "@react-native/metro-config": "^0.76.3",
         "@types/jest": "^29.5.13",
         "@types/react": "~18.3.12",

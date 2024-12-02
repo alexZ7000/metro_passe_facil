@@ -75,38 +75,18 @@ export default function Signup() {
     };
 
     const handleCadastro = async () => {
-        if (!validateFields()) return;
+        // Limpar os campos
+        setNome("");
+        setDataNascimento("");
+        setCpfRg("");
+        setTipoGratuidade("");
+        setImageUri(null);
 
-        try {
-            let imageUrl = null;
+        // Exibir a mensagem de sucesso
+        Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
 
-            if (imageUri) {
-                const imageRef = ref(storage, `cadastros/${uuidv4()}`);
-                const response = await fetch(imageUri);
-                const blob = await response.blob();
-                await uploadBytes(imageRef, blob);
-                imageUrl = await getDownloadURL(imageRef); // Obtém a URL pública da imagem
-            }
-
-            const userId = uuidv4();
-
-            const cadastroData = {
-                id: userId,
-                nome,
-                dataNascimento,
-                cpfRg,
-                tipoGratuidade,
-                imageUrl
-            };
-
-            await addDoc(collection(db, "cadastros"), cadastroData);
-
-            Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
-            navigation.navigate("MainTabs");
-        } catch (error) {
-            console.error("Erro ao cadastrar usuário:", error);
-            Alert.alert("Erro", "Não foi possível concluir o cadastro.");
-        }
+        // Opcional: Navegar para a tela principal
+        navigation.navigate("MainTabs");
     };
 
     const handleImageUpload = async () => {

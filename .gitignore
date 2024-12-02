@@ -45,3 +45,8 @@ expo-env.d.ts
 .env*.local
 
 # @end expo-cli
+
+#apk
+
+android/app/my-release-key.jks
+android/app/build/outputs/apk/release/app-release.apk
