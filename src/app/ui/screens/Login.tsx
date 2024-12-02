@@ -1,5 +1,5 @@
 import metroLogo from "@assets/metro-logo.png";
-import Navbar from "@components/nav/Navbar";
+import Header from "@components/nav/Header";
 import loginOrRegisterUser from "@modules/Auth/authService";
 import { useState } from "react";
 import {
@@ -55,7 +55,12 @@ export default function Login() {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <Navbar />
+            <Header
+                title="Passe Fácil"
+                icon="log-in"
+                backgroundColor="#011689"
+                textColor="white"
+            />
             <View style={styles.innerContainer}>
                 <ImageBackground source={metroLogo} style={styles.logo} />
                 <TextInput

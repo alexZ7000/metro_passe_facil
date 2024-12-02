@@ -1,15 +1,12 @@
 import {
     API_KEY,
+    APP_ID,
     AUTH_DOMAIN,
-    PROJECT_ID,
-    STORAGE_BUCKET,
     MESSAGING_SENDER_ID,
-    APP_ID
+    PROJECT_ID,
+    STORAGE_BUCKET
 } from "@env";
 import { initializeApp } from "firebase/app";
-import { initializeAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: API_KEY,
@@ -20,9 +17,7 @@ const firebaseConfig = {
     appId: APP_ID
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
-const auth = initializeAuth(app);
 
-export { auth, db, storage };
+export { app };

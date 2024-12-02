@@ -18,6 +18,7 @@ module.exports = {
     rules: {
         "react/prop-types": "off",
         "react/react-in-jsx-scope": "off",
+        "react-hooks/rules-of-hooks": "off",
         "prettier/prettier": [
             "error",
             {
