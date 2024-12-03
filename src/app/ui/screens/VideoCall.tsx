@@ -1,17 +1,26 @@
 import Header from "@components/nav/Header";
+import { MaterialIcons } from "@expo/vector-icons";
+import React, { useState } from "react";
 import {
     View,
     StyleSheet,
-    Text,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    Dimensions
 } from "react-native";
-import { Button, Appbar } from "react-native-paper";
+import { Button, Appbar, IconButton } from "react-native-paper";
+
+const { width, height } = Dimensions.get("window");
 
 export default function VideoCall() {
+    const [isCallStarted, setIsCallStarted] = useState(false);
+
+    const startCall = () => setIsCallStarted(true);
+    const endCall = () => setIsCallStarted(false);
+
     return (
         <KeyboardAvoidingView
-            style={styles.contains}
+            style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <Header
@@ -21,23 +30,68 @@ export default function VideoCall() {
                 textColor="white"
             />
 
-            <View style={styles.container}>
-                <Appbar.Header>
-                    <Appbar.Content title="Video Call" />
-                </Appbar.Header>
-
-                <View style={styles.videoContainer}>
-                    <Text>
-                        Aqui vai ficar o vídeo da videochamada, ela foi tirada
-                        para evitar conflitos no npx expo start
-                    </Text>
+            <View style={styles.content}>
+                <View
+                    style={[
+                        styles.videoContainer,
+                        !isCallStarted && styles.videoContainerInactive
+                    ]}
+                >
+                    {/* Video fica aqui*/}
                 </View>
 
                 <View style={styles.controls}>
-                    <Button mode="contained">Iniciar Câmera</Button>
-                    <Button mode="contained">Iniciar Chamada</Button>
-                    <Button mode="contained">Encerrar Chamada</Button>
+                    {!isCallStarted ? (
+                        <Button
+                            mode="contained"
+                            onPress={startCall}
+                            style={styles.button}
+                            labelStyle={styles.buttonLabel}
+                        >
+                            Iniciar Chamada
+                        </Button>
+                    ) : (
+                        <Button
+                            mode="contained"
+                            onPress={endCall}
+                            style={[styles.button, styles.endCallButton]}
+                            labelStyle={styles.buttonLabel}
+                        >
+                            Encerrar Chamada
+                        </Button>
+                    )}
                 </View>
+
+                {isCallStarted && (
+                    <View style={styles.floatingControls}>
+                        <IconButton
+                            icon={() => (
+                                <MaterialIcons
+                                    name="mic"
+                                    size={24}
+                                    color="white"
+                                />
+                            )}
+                            style={styles.floatingButton}
+                            onPress={() => {
+                                /* Toggle mic - ativar*/
+                            }}
+                        />
+                        <IconButton
+                            icon={() => (
+                                <MaterialIcons
+                                    name="videocam"
+                                    size={24}
+                                    color="white"
+                                />
+                            )}
+                            style={styles.floatingButton}
+                            onPress={() => {
+                                /* Toggle camera - ativar */
+                            }}
+                        />
+                    </View>
+                )}
             </View>
         </KeyboardAvoidingView>
     );
@@ -46,30 +100,49 @@ export default function VideoCall() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        padding: 100
+        backgroundColor: "#EEF0F4"
     },
-    contains: {
+    appbar: {
+        backgroundColor: "#f7b731"
+    },
+    content: {
         flex: 1,
-        backgroundColor: "#EEF0F4",
-        position: "relative"
+        justifyContent: "space-between"
     },
     videoContainer: {
         flex: 1,
-        flexDirection: "row"
+        backgroundColor: "#000",
+        margin: 16,
+        borderRadius: 8
     },
-    localVideo: {
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#000"
-    },
-    remoteVideo: {
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#000"
+    videoContainerInactive: {
+        backgroundColor: "#e0e0e0"
     },
     controls: {
         flexDirection: "row",
-        justifyContent: "center"
+        justifyContent: "center",
+        padding: 16
+    },
+    button: {
+        backgroundColor: "#f7b731",
+        paddingHorizontal: 32,
+        paddingVertical: 8
+    },
+    buttonLabel: {
+        fontSize: 18,
+        color: "white"
+    },
+    endCallButton: {
+        backgroundColor: "#FF3B30"
+    },
+    floatingControls: {
+        position: "absolute",
+        bottom: 100,
+        left: 16,
+        flexDirection: "row"
+    },
+    floatingButton: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        margin: 4
     }
 });
