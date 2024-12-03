@@ -1,13 +1,25 @@
+import Header from "@components/nav/Header";
+import { MaterialIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Button, Appbar } from "react-native-paper";
+import {
+    View,
+    StyleSheet,
+    KeyboardAvoidingView,
+    Platform,
+    Dimensions
+} from "react-native";
+import { Button, Appbar, IconButton } from "react-native-paper";
 import { RTCView, mediaDevices, RTCPeerConnection } from "react-native-webrtc";
 
+const { width, height } = Dimensions.get("window");
 const configuration = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
 };
-
 export default function VideoCall() {
+    const [isCallStarted, setIsCallStarted] = useState(false);
+
+    const startCall = () => setIsCallStarted(true);
+    const endCall = () => setIsCallStarted(false);
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
     const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
     const peerConnection = useRef<RTCPeerConnection>(
@@ -34,74 +46,149 @@ export default function VideoCall() {
         await peerConnection.current.setLocalDescription(offer);
     };
 
-    const endCall = () => {
-        peerConnection.current.close();
-        setLocalStream(null);
-        setRemoteStream(null);
-    };
-
     (peerConnection.current as any).ontrack = (event: RTCTrackEvent) => {
         setRemoteStream(event.streams[0]);
     };
 
     return (
-        <View style={styles.container}>
-            <Appbar.Header>
-                <Appbar.Content title="Video Call" />
-            </Appbar.Header>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <Header
+                title="Atendimento remoto"
+                icon="headphones"
+                backgroundColor="#f7b731"
+                textColor="white"
+            />
 
-            <View style={styles.videoContainer}>
-                {localStream && (
-                    <RTCView
-                        streamURL={localStream?.id || ""}
-                        style={styles.localVideo}
-                    />
-                )}
-                {remoteStream && (
-                    <RTCView
-                        streamURL={localStream?.id || ""}
-                        style={styles.localVideo}
-                    />
+            <View style={styles.content}>
+                <View
+                    style={[
+                        styles.videoContainer,
+                        !isCallStarted && styles.videoContainerInactive
+                    ]}
+                >
+                    {localStream && (
+                        <RTCView
+                            streamURL={localStream?.id || ""}
+                            style={styles.localVideo}
+                        />
+                    )}
+                    {remoteStream && (
+                        <RTCView
+                            streamURL={localStream?.id || ""}
+                            style={styles.localVideo}
+                        />
+                    )}
+                </View>
+
+                <View style={styles.controls}>
+                    {!isCallStarted ? (
+                        <Button
+                            mode="contained"
+                            onPress={startCall}
+                            style={styles.button}
+                            labelStyle={styles.buttonLabel}
+                        >
+                            Iniciar Chamada
+                        </Button>
+                    ) : (
+                        <Button
+                            mode="contained"
+                            onPress={endCall}
+                            style={[styles.button, styles.endCallButton]}
+                            labelStyle={styles.buttonLabel}
+                        >
+                            Encerrar Chamada
+                        </Button>
+                    )}
+                </View>
+
+                {isCallStarted && (
+                    <View style={styles.floatingControls}>
+                        <IconButton
+                            icon={() => (
+                                <MaterialIcons
+                                    name="mic"
+                                    size={24}
+                                    color="white"
+                                />
+                            )}
+                            style={styles.floatingButton}
+                            onPress={() => {
+                                /* Toggle mic - ativar*/
+                            }}
+                        />
+                        <IconButton
+                            icon={() => (
+                                <MaterialIcons
+                                    name="videocam"
+                                    size={24}
+                                    color="white"
+                                />
+                            )}
+                            style={styles.floatingButton}
+                            onPress={startLocalStream}
+                        />
+                    </View>
                 )}
             </View>
-
-            <View style={styles.controls}>
-                <Button mode="contained" onPress={startLocalStream}>
-                    Iniciar Câmera
-                </Button>
-                <Button mode="contained" onPress={initiateCall}>
-                    Iniciar Chamada
-                </Button>
-                <Button mode="contained" onPress={endCall}>
-                    Encerrar Chamada
-                </Button>
-            </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        padding: 100
+        backgroundColor: "#EEF0F4"
+    },
+    appbar: {
+        backgroundColor: "#f7b731"
+    },
+    content: {
+        flex: 1,
+        justifyContent: "space-between"
     },
     videoContainer: {
         flex: 1,
-        flexDirection: "row"
+        backgroundColor: "#000",
+        margin: 16,
+        borderRadius: 8
+    },
+    videoContainerInactive: {
+        backgroundColor: "#e0e0e0"
+    },
+    controls: {
+        flexDirection: "row",
+        justifyContent: "center",
+        padding: 16
+    },
+    button: {
+        backgroundColor: "#f7b731",
+        paddingHorizontal: 32,
+        paddingVertical: 8
+    },
+    buttonLabel: {
+        fontSize: 18,
+        color: "white"
+    },
+    endCallButton: {
+        backgroundColor: "#FF3B30"
     },
     localVideo: {
         width: "100%",
         height: "100%",
         backgroundColor: "#000"
     },
-    remoteVideo: {
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#000"
+    floatingControls: {
+        position: "absolute",
+        bottom: 100,
+        left: 16,
+        flexDirection: "row"
     },
-    controls: {
-        flexDirection: "row",
-        justifyContent: "center"
+    floatingButton: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        margin: 4
     }
 });

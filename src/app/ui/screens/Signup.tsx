@@ -1,5 +1,4 @@
 import Header from "@components/nav/Header";
-import Sidebar from "@components/nav/Sidebar";
 import useAppNavigation from "@functions/useAppNavigation";
 import { db, storage } from "@modules/api";
 import { useFocusEffect } from "@react-navigation/native";
@@ -20,10 +19,8 @@ import {
     ScrollView
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Button, IconButton } from "react-native-paper";
+import { Button, IconButton, Text } from "react-native-paper";
 import { v4 as uuidv4 } from "uuid";
-
-// FIXME: Funcionalidade de abrir câmera não funciona para WEB
 
 export default function Signup() {
     const [nome, setNome] = useState("");
@@ -33,28 +30,9 @@ export default function Signup() {
     const [imageUri, setImageUri] = useState<string | null>(null);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const navigation = useAppNavigation();
-    const { width } = useWindowDimensions();
-    const isWideScreen = width > 1000;
-
-    useFocusEffect(
-        useCallback(() => {
-            return () => {
-                setNome("");
-                setDataNascimento("");
-                setCpfRg("");
-                setTipoGratuidade("");
-                setImageUri(null); // Resetar a imagem ao sair
-            };
-        }, [])
-    );
-
-    const validateFields = () => {
-        if (!nome || !dataNascimento || !cpfRg || !tipoGratuidade) {
-            Alert.alert("Erro", "Todos os campos são obrigatórios!");
-            return false;
-        }
-        return true;
-    };
+    const { width, height } = useWindowDimensions();
+    const isWideScreen = width > 768;
+    const isVerySmallScreen = width < 360;
 
     useFocusEffect(
         useCallback(() => {
@@ -67,6 +45,14 @@ export default function Signup() {
             };
         }, [])
     );
+
+    const validateFields = () => {
+        if (!nome || !dataNascimento || !cpfRg || !tipoGratuidade) {
+            Alert.alert("Erro", "Todos os campos são obrigatórios!");
+            return false;
+        }
+        return true;
+    };
 
     const handleDateConfirm = (date: Date) => {
         const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
@@ -85,7 +71,7 @@ export default function Signup() {
                 const response = await fetch(imageUri);
                 const blob = await response.blob();
                 await uploadBytes(imageRef, blob);
-                imageUrl = await getDownloadURL(imageRef); // Obtém a URL pública da imagem
+                imageUrl = await getDownloadURL(imageRef);
             }
 
             const userId = uuidv4();
@@ -119,6 +105,8 @@ export default function Signup() {
               );
     };
 
+    const ContentWrapper = !isWideScreen ? ScrollView : View;
+
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -130,213 +118,126 @@ export default function Signup() {
                 backgroundColor="#9164cc"
                 textColor="white"
             />
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.content}>
-                    <Sidebar
-                        activeRoute="add-person"
-                        height={400} // Ajuste conforme necessário
-                    />
+            <ContentWrapper style={styles.content}>
+                <View
+                    style={[styles.formRow, !isWideScreen && styles.formColumn]}
+                >
+                    <TouchableOpacity
+                        style={[
+                            styles.imageUpload,
+                            { flex: isWideScreen ? 0.6 : 1 }
+                        ]}
+                        onPress={handleImageUpload}
+                    >
+                        {imageUri ? (
+                            <Image
+                                source={{ uri: imageUri }}
+                                style={styles.imagePreview}
+                            />
+                        ) : (
+                            <IconButton
+                                icon="plus"
+                                size={40}
+                                iconColor="#9164cc"
+                            />
+                        )}
+                    </TouchableOpacity>
 
                     <View
                         style={[
-                            styles.formRow,
-                            !isWideScreen && styles.formColumn
+                            styles.inputColumn,
+                            { flex: isWideScreen ? 0.4 : 1 }
                         ]}
                     >
-                        <TouchableOpacity
-                            style={styles.imageUpload}
-                            onPress={handleImageUpload}
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Nome"
+                            value={nome}
+                            onChangeText={setNome}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Data de nascimento"
+                            value={dataNascimento}
+                            onChangeText={setDataNascimento}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Nº CPF"
+                            value={cpfRg}
+                            onChangeText={setCpfRg}
+                            keyboardType="numeric"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Tipo de Gratuidade"
+                            value={tipoGratuidade}
+                            onChangeText={setTipoGratuidade}
+                        />
+                        <Button
+                            mode="contained"
+                            style={styles.button}
+                            onPress={handleCadastro}
                         >
-                            {imageUri ? (
-                                <Image
-                                    source={{ uri: imageUri }}
-                                    style={styles.imagePreview}
-                                />
-                            ) : (
-                                <IconButton
-                                    icon="plus"
-                                    size={40}
-                                    iconColor="#9164cc"
-                                />
-                            )}
-                        </TouchableOpacity>
-
-                        <View style={styles.inputColumn}>
-                            <View style={styles.inputGroup}>
-                                <View
-                                    style={[
-                                        styles.inputGroup,
-                                        !isWideScreen && styles.inputRow,
-                                        !isWideScreen && styles.grid
-                                    ]}
-                                >
-                                    <TextInput
-                                        style={styles.fullWidthInput}
-                                        placeholder="Nome"
-                                        value={nome}
-                                        onChangeText={setNome}
-                                    />
-                                    <TextInput
-                                        style={styles.fullWidthInput}
-                                        placeholder="Data de nascimento"
-                                        value={dataNascimento}
-                                        onChangeText={setDataNascimento}
-                                    />
-                                </View>
-                                <View
-                                    style={[
-                                        styles.inputGroup,
-                                        !isWideScreen && styles.inputRow,
-                                        !isWideScreen && styles.grid
-                                    ]}
-                                >
-                                    <TextInput
-                                        style={styles.fullWidthInput}
-                                        placeholder="Nº CPF"
-                                        value={cpfRg}
-                                        onChangeText={setCpfRg}
-                                        keyboardType="numeric"
-                                    />
-                                    <TextInput
-                                        style={styles.fullWidthInput}
-                                        placeholder="Tipo de Gratuidade"
-                                        value={tipoGratuidade}
-                                        onChangeText={setTipoGratuidade}
-                                    />
-                                </View>
-
-                                <View style={styles.buttonContainer}>
-                                    <Button
-                                        mode="contained"
-                                        style={styles.button}
-                                        onPress={handleCadastro}
-                                    >
-                                        Cadastrar
-                                    </Button>
-                                </View>
-                            </View>
-                        </View>
+                            Cadastrar
+                        </Button>
                     </View>
                 </View>
+            </ContentWrapper>
 
-                <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleDateConfirm}
-                    onCancel={() => setDatePickerVisibility(false)}
-                    date={new Date()}
-                />
-            </ScrollView>
-            {/* <BottomNavbar /> */}
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleDateConfirm}
+                onCancel={() => setDatePickerVisibility(false)}
+                date={new Date()}
+            />
         </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
-    content: {
-        flex: 1,
-        marginTop: 100,
-        padding: 24,
-        height: "92%"
-    },
-    scrollViewContent: {
-        flexGrow: 1
-    },
     container: {
         flex: 1,
-        backgroundColor: "#EEF0F4",
-        position: "relative"
+        backgroundColor: "#EEF0F4"
     },
-    logo: {
-        alignSelf: "flex-end",
-        width: 50,
-        height: 50,
-        marginBottom: 10
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        backgroundColor: "#9164cc",
-        color: "#fff",
-        textAlign: "center",
-        // marginBottom: 10,
-        paddingLeft: "59%"
+    content: {
+        flex: 1,
+        padding: 24
     },
     formRow: {
         flex: 1,
         flexDirection: "row",
-        gap: 24,
-        flexWrap: "wrap"
-    },
-    sidebarAdaptor: {
-        marginLeft: 50
+        gap: 24
     },
     formColumn: {
         flexDirection: "column"
     },
     imageUpload: {
-        flex: 1,
         backgroundColor: "#e0e0e0",
-        width: "100%",
-        minHeight: 200,
-        maxHeight: 400,
         borderRadius: 8,
-        alignSelf: "center",
         justifyContent: "center",
         alignItems: "center",
-        marginBottom: 24
-        // paddingRight: 100
-        // marginBottom: 20
+        aspectRatio: 3 / 4
     },
     imagePreview: {
         width: "100%",
         height: "100%",
         borderRadius: 8
     },
-    inputGroup: {
-        width: "100%",
-        gap: 16
-    },
     inputColumn: {
-        flex: 1,
-        justifyContent: "space-between"
-    },
-    inputRow: {
-        flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "flex-start"
     },
     input: {
-        width: "100%",
         backgroundColor: "#e0e0e0",
         borderRadius: 8,
         padding: 16,
-        marginBottom: 16
-    },
-    fullWidthInput: {
-        width: "100%",
-        backgroundColor: "#e0e0e0",
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 16
-    },
-    dateText: {
-        color: "black"
-    },
-    buttonContainer: {
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        marginTop: 16
+        marginBottom: 12
     },
     button: {
         backgroundColor: "#9164cc",
         borderRadius: 8,
         paddingVertical: 10,
-        paddingHorizontal: 20
-    },
-    grid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between"
+        marginTop: 12
     }
 });
