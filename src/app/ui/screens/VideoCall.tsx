@@ -42,6 +42,7 @@ export default function VideoCall() {
     };
 
     const initiateCall = async () => {
+        startLocalStream();
         const offer = await peerConnection.current.createOffer({});
         await peerConnection.current.setLocalDescription(offer);
     };
@@ -87,7 +88,7 @@ export default function VideoCall() {
                     {!isCallStarted ? (
                         <Button
                             mode="contained"
-                            onPress={startCall}
+                            onPress={initiateCall}
                             style={styles.button}
                             labelStyle={styles.buttonLabel}
                         >
